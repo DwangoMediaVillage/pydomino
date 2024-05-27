@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pydominoの使用例 &mdash; pydomino  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=c033477b"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/translations.js?v=4dbe4bdc"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="prev" title="pydomino.Aliger クラス" href="aligner.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pydomino
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="aligner.html">pydomino.Aliger クラス</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">pydominoの使用例</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#python">pythonライブラリの場合</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">コマンドラインツールの場合</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pydomino</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pydominoの使用例</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/examples.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pydomino">
+<h1>pydominoの使用例<a class="headerlink" href="#pydomino" title="Link to this heading"></a></h1>
+<section id="python">
+<h2>pythonライブラリの場合<a class="headerlink" href="#python" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">librosa</span>
+<span class="kn">import</span> <span class="nn">pydomino</span>
+
+<span class="n">alignmer</span><span class="p">:</span> <span class="n">pydomino</span><span class="o">.</span><span class="n">Aligner</span> <span class="o">=</span> <span class="n">pydomino</span><span class="o">.</span><span class="n">Aligner</span><span class="p">(</span><span class="s2">&quot;onnx_model/model.onnx&quot;</span><span class="p">)</span>
+<span class="n">wav_source</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;example/dowaNgo.wav&quot;</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="mi">16_000</span><span class="p">,</span> <span class="n">mono</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">phonemes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;pau&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;pau&quot;</span><span class="p">]</span>
+<span class="n">alignment_result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">alignmer</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">wav_source</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">phonemes</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">alignment_result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>とすると、以下のアラインメント結果が得られます</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.07999999821186066</span><span class="p">,</span> <span class="s1">&#39;pau&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.07999999821186066</span><span class="p">,</span> <span class="mf">0.12999999523162842</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.12999999523162842</span><span class="p">,</span> <span class="mf">0.20000000298023224</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.20000000298023224</span><span class="p">,</span> <span class="mf">0.25999999046325684</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.25999999046325684</span><span class="p">,</span> <span class="mf">0.3400000035762787</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.3400000035762787</span><span class="p">,</span> <span class="mf">0.44999998807907104</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.44999998807907104</span><span class="p">,</span> <span class="mf">0.47999998927116394</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.47999998927116394</span><span class="p">,</span> <span class="mf">0.6800000071525574</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.6800000071525574</span><span class="p">,</span> <span class="mf">0.7300000190734863</span><span class="p">,</span> <span class="s1">&#39;pau&#39;</span><span class="p">)</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>ここで、第3引数の最小割り当てフレーム数を5に変えてみると、とすると、以下のアラインメント結果が得られます</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">alignment_result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">alignmer</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">wav_source</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">phonemes</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">alignment_result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.07999999821186066</span><span class="p">,</span> <span class="s1">&#39;pau&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.07999999821186066</span><span class="p">,</span> <span class="mf">0.12999999523162842</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.12999999523162842</span><span class="p">,</span> <span class="mf">0.20000000298023224</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.20000000298023224</span><span class="p">,</span> <span class="mf">0.25999999046325684</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.25999999046325684</span><span class="p">,</span> <span class="mf">0.3400000035762787</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.3400000035762787</span><span class="p">,</span> <span class="mf">0.4399999976158142</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.4399999976158142</span><span class="p">,</span> <span class="mf">0.49000000953674316</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.49000000953674316</span><span class="p">,</span> <span class="mf">0.6800000071525574</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.6800000071525574</span><span class="p">,</span> <span class="mf">0.7300000190734863</span><span class="p">,</span> <span class="s1">&#39;pau&#39;</span><span class="p">)</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>音素 &quot;g&quot; に割り当てられた秒数が 0.03秒から0.05秒に伸びます。これが、最小割り当てフレーム数の保証によるものです。</p>
+</section>
+<section id="id1">
+<h2>コマンドラインツールの場合<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>git clone と pip install ./ を使った場合、./build ディレクトリ以下にコマンドラインツールがビルドされます。</p>
+<p>これによってアラインメントの実行も可能です</p>
+<p>たとえば</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>build/<span class="o">{</span>temporary-directory<span class="o">}</span>/pydomino/domino<span class="w"> </span>--input_path<span class="w"> </span>example/dowaNgo.wav<span class="w"> </span>--input_phoneme<span class="w"> </span><span class="s2">&quot;pau d o w a N g o pau&quot;</span><span class="w"> </span>--output_path<span class="w"> </span>result.lab<span class="w"> </span>-N<span class="w"> </span><span class="m">5</span>
+</pre></div>
+</div>
+<p>とすると、以下のアラインメント結果が labファイル（result.lab）に出力されます</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>cat<span class="w"> </span>result.wav
+</pre></div>
+</div>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="mf">0.00</span><span class="w">        </span><span class="mf">0.08</span><span class="w">    </span><span class="n">pau</span>
+<span class="mf">0.08</span><span class="w">        </span><span class="mf">0.13</span><span class="w">    </span><span class="n">d</span>
+<span class="mf">0.13</span><span class="w">        </span><span class="mf">0.20</span><span class="w">    </span><span class="n">o</span>
+<span class="mf">0.20</span><span class="w">        </span><span class="mf">0.26</span><span class="w">    </span><span class="n">w</span>
+<span class="mf">0.26</span><span class="w">        </span><span class="mf">0.34</span><span class="w">    </span><span class="n">a</span>
+<span class="mf">0.34</span><span class="w">        </span><span class="mf">0.44</span><span class="w">    </span><span class="n">N</span>
+<span class="mf">0.44</span><span class="w">        </span><span class="mf">0.49</span><span class="w">    </span><span class="n">g</span>
+<span class="mf">0.49</span><span class="w">        </span><span class="mf">0.68</span><span class="w">    </span><span class="n">o</span>
+<span class="mf">0.68</span><span class="w">        </span><span class="mf">0.73</span><span class="w">    </span><span class="n">pau</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="aligner.html" class="btn btn-neutral float-left" title="pydomino.Aliger クラス" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, DWANGO Co.,Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
