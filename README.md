@@ -53,7 +53,7 @@ alignmer: pydomino.Aligner = pydomino.Aligner(path-to-model-file.onnx)
 
 y: np.ndarray = librosa.load(path-to-wav-file, sr=16_000, mono=True, dtype=np.float32)[0]
 p: list[str] = path-to-phoneme-file.read_text().split(" ")
-z: list[tuple[float, float, str]] = alignmer.align(y, " ".join(p), N=3) # [(start_time_sec, end_time_sec, phoneme_str)]
+z: list[tuple[float, float, str]] = alignmer.align(y, " ".join(p), 3) # [(start_time_sec, end_time_sec, phoneme_str)]
 ```
 
 * `path-to-model-file.onnx` は事前学習済みの onnx モデルファイルです。
