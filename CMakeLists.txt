@@ -55,3 +55,10 @@ target_link_libraries(
     domino
     PRIVATE onnxruntime
 )
+
+if(WIN32)
+    add_custom_command(
+        TARGET pydomino POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${FETCHCONTENT_BASE_DIR}/onnxruntime-src/lib/onnxruntime.dll $<TARGET_FILE_DIR:pydomino>
+    )
+endif()
