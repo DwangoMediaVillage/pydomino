@@ -103,7 +103,7 @@ class CMakeBuild(build_ext):
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="pydomino",
-    version="1.0.0",
+    version="1.0.1",
     url="https://github.com/DwangoMediaVillage/pydomino",
     author="DWANGO Co., Ltd.",
     author_email="shun_ueda@dwango.co.jp",
