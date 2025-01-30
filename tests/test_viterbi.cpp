@@ -154,6 +154,7 @@ forward_by_eigen(Eigen::Ref<Eigen::Matrix<float, -1, -1, Eigen::RowMajor>> const
         forward_logprob_if_transit_Nframes_ago += dist(s, i - 1);
       }
 
+      // i - 1番目の音素遷移が t - N フレーム目より前で遷移が起こっていたときの前向き確率
       float forward_logprob_if_transit_before_Nframes =
           (t - 2 >= 0) ? forward_logprobs(t - 2, i - 1) + dist(t - 1, i - 1) : -std::numeric_limits<float>::infinity();
 
@@ -196,21 +197,22 @@ void test_forward_func(std::string HDF5path, std::vector<int> const token_ids) {
         result_eigen = forward_by_eigen(log_emission_probs_by_eigen, minimum_align_length);
 
     std::vector<bool> is_transition(rows * token_ids.size());
-    std::vector<float> forward_logprobs =
+    std::vector<float> const forward_logprobs =
         viterbi_forward(rows, token_ids.size() * 2 + 1, log_emission_probs, is_transition, minimum_align_length);
 
     Eigen::Matrix<bool, -1, -1, Eigen::RowMajor> expected_is_transit = std::get<0>(result_eigen);
     Eigen::Matrix<float, -1, -1, Eigen::RowMajor> expected_forward_logprobs = std::get<1>(result_eigen);
-    for (int j = 0; j < num_tokens_with_blank; ++j) {
-      for (int t = 0; t < rows; ++t) {
-        ASSERT_EQ(forward_logprobs[t * num_tokens_with_blank + j], expected_forward_logprobs(t, j))
-            << "Error: Emerged at t = " << t << ", j = " << j;
-      }
-    }
 
     for (int j = 0; j < token_ids.size(); ++j) {
       for (int t = 0; t < rows; ++t) {
-        ASSERT_EQ(is_transition[t * num_tokens_with_blank + j], expected_is_transit(t, j));
+        ASSERT_EQ(is_transition[t * token_ids.size() + j], expected_is_transit(t, j))
+            << "Error: Emerged at t = " << t << ", token_idx = " << j << ", N=" << minimum_align_length;
+      }
+    }
+    for (int j = 0; j < num_tokens_with_blank; ++j) {
+      for (int t = 0; t < rows; ++t) {
+        ASSERT_EQ(forward_logprobs[t * num_tokens_with_blank + j], expected_forward_logprobs(t, j))
+            << "Error: Emerged at t = " << t << ", token_idx = " << j << ", N=" << minimum_align_length;
       }
     }
   }

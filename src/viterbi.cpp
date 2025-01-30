@@ -48,8 +48,9 @@ int viterbi_init(int const len_timeframes, float const* logprobs_output_by_onnxn
  * @return int
  */
 std::vector<float> viterbi_forward(int const len_timeframes, int const num_tokens_with_blank,
-                                   std::vector<float> const log_emission_probs, std::vector<bool> is_transition,
+                                   std::vector<float> const& log_emission_probs, std::vector<bool>& is_transition,
                                    int const min_aligned_time) {
+  int const num_tokens_without_blank = (num_tokens_with_blank - 1) / 2;  // blankを含まない音素遷移トークン数
   std::vector<float> forward_logprobs(log_emission_probs.size(), -std::numeric_limits<float>::infinity());
   std::fill(is_transition.begin(), is_transition.end(), false);
 
@@ -64,6 +65,50 @@ std::vector<float> viterbi_forward(int const len_timeframes, int const num_token
     forward_logprobs[t * num_tokens_with_blank + 1] =
         forward_logprobs[(t - 1) * num_tokens_with_blank] + log_emission_probs[t * num_tokens_with_blank + 1];
   }
+
+  for (int token_idx = 3; token_idx < num_tokens_with_blank; token_idx += 2) {
+    for (int t = min_aligned_time * (token_idx - 1) / 2; t < len_timeframes; ++t) {
+      // i - 1番目の音素遷移が t - N フレーム目で遷移が起こっていたときの前向き確率
+      float forward_logprob_if_transit_Nframes_ago =
+          forward_logprobs[(t - min_aligned_time) * num_tokens_with_blank + token_idx - 2];
+      for (int s = t - min_aligned_time + 1; s < t; ++s) {
+        forward_logprob_if_transit_Nframes_ago += log_emission_probs[s * num_tokens_with_blank + token_idx - 1];
+      }
+
+      // i - 1番目の音素遷移が t - N フレーム目より前で遷移が起こっていたときの前向き確率
+      float forward_logprob_if_transit_before_Nframes;
+      if (t >= 2) {
+        forward_logprob_if_transit_before_Nframes = forward_logprobs[(t - 2) * num_tokens_with_blank + token_idx - 1] +
+                                                    log_emission_probs[(t - 1) * num_tokens_with_blank + token_idx - 1];
+      } else {
+        forward_logprob_if_transit_before_Nframes = -std::numeric_limits<float>::infinity();
+      }
+
+      is_transition[(t - min_aligned_time) * num_tokens_without_blank + (token_idx - 3) / 2] =
+          (forward_logprob_if_transit_Nframes_ago > forward_logprob_if_transit_before_Nframes);
+      forward_logprobs[t * num_tokens_with_blank + token_idx] =
+          std::max(forward_logprob_if_transit_Nframes_ago, forward_logprob_if_transit_before_Nframes) +
+          log_emission_probs[t * num_tokens_with_blank + token_idx];
+      forward_logprobs[(t - 1) * num_tokens_with_blank + token_idx - 1] =
+          forward_logprobs[t * num_tokens_with_blank + token_idx] -
+          log_emission_probs[t * num_tokens_with_blank + token_idx];
+    }
+  }
+
+  // 最後のblank
+  int last_blank_idx = num_tokens_with_blank - 1;
+  for (int t = min_aligned_time; t < len_timeframes; ++t) {
+    forward_logprobs[t * num_tokens_with_blank + last_blank_idx] =
+        std::max(forward_logprobs[(t - 1) * num_tokens_with_blank + last_blank_idx - 1],
+                 forward_logprobs[(t - 1) * num_tokens_with_blank + last_blank_idx]) +
+        log_emission_probs[t * num_tokens_with_blank + last_blank_idx];
+    is_transition[(t - 1) * num_tokens_without_blank + num_tokens_without_blank - 1] =
+        forward_logprobs[(t - 1) * num_tokens_with_blank + last_blank_idx - 1] >
+        forward_logprobs[(t - 1) * num_tokens_with_blank + last_blank_idx];
+  }
+  is_transition[(len_timeframes - 1) * num_tokens_without_blank + num_tokens_without_blank - 1] =
+      forward_logprobs[(len_timeframes - 1) * num_tokens_with_blank + last_blank_idx - 1] >
+      forward_logprobs[(len_timeframes - 1) * num_tokens_with_blank + last_blank_idx];
 
   return forward_logprobs;
 }
