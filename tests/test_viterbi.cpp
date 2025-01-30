@@ -223,3 +223,67 @@ TEST(Test_ViterbiAlgorithm, test_forward) {
   test_forward_func("tests/prediction_logprobs/ishIkI.h5", {551, 259, 132, 404, 111, 418});
   test_forward_func("tests/prediction_logprobs/tasuuketsU.h5", {547, 183, 223, 136, 293, 109, 332, 126, 448});
 }
+
+/**
+ * @brief viterbiアルゴリズムのbacktrace部分を定義する
+ *
+ * @param is_transit shape = (num_timeframes, num_tokens_without_blank). is_transit[t, i] = true
+ * はそこでi番目の音素遷移が起こったことを表す
+ * @param minimum_align_length 音素遷移Viterbiにおいて、最低割り当てフレーム数。
+ * @return std::vector<int> length = num_tokens_without_blank.
+ */
+std::vector<int> backtrace_by_eigen(Eigen::Ref<Eigen::Matrix<bool, -1, -1, Eigen::RowMajor>> const is_transit,
+                                    int minimum_align_length) {
+  int const num_tokens_without_blank = is_transit.cols();
+  std::vector<int> transition_timeframes(num_tokens_without_blank, 0);
+  int t = is_transit.rows() - 1;
+  int i = num_tokens_without_blank - 1;
+  while (t > -1) {
+    if (is_transit(t, i)) {
+      transition_timeframes[i--] = t;
+      t -= minimum_align_length;
+    } else {
+      --t;
+    }
+    if (i < 0) {
+      break;
+    }
+  }
+  return transition_timeframes;
+}
+
+void test_backtrace_func(std::string HDF5path, std::vector<int> const token_ids) {
+  int rows, cols;
+  float const* y = loadHDF5(HDF5path, rows, cols);
+  const int len_timeframe = rows;
+  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> m = loadHDF5(HDF5path);
+
+  int const blank_id = 557;
+  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> log_emission_probs_by_eigen = init_by_eigen(m, token_ids, blank_id);
+  std::vector<float> log_emission_probs(len_timeframe * (cols * 2 + 1));
+  int const num_tokens_with_blank = token_ids.size() * 2 + 1;
+  viterbi_init(len_timeframe, y, token_ids, 558, blank_id, log_emission_probs);
+
+  for (int minimum_align_length = 1; minimum_align_length < 8; ++minimum_align_length) {
+    std::tuple<Eigen::Matrix<bool, -1, -1, Eigen::RowMajor>, Eigen::Matrix<float, -1, -1, Eigen::RowMajor>>
+        result_eigen = forward_by_eigen(log_emission_probs_by_eigen, minimum_align_length);
+    std::vector<bool> is_transition(len_timeframe * token_ids.size());
+    viterbi_forward(len_timeframe, token_ids.size() * 2 + 1, log_emission_probs, is_transition, minimum_align_length);
+    Eigen::Matrix<bool, -1, -1, Eigen::RowMajor> is_transit_by_eigen = std::get<0>(result_eigen);
+
+    std::vector<int> expected_timeframes = backtrace_by_eigen(is_transit_by_eigen, minimum_align_length);
+    std::vector<int> output_timeframes(token_ids.size(), 0);
+    viterbi_backtrace(len_timeframe, token_ids.size(), is_transition, minimum_align_length, output_timeframes);
+
+    ASSERT_EQ(output_timeframes.size(), expected_timeframes.size());
+    for (int i = 0; i < expected_timeframes.size(); ++i) {
+      ASSERT_EQ(output_timeframes[i], expected_timeframes[i]);
+    }
+  }
+}
+
+TEST(Test_ViterbiAlgorithm, test_backtrace) {
+  test_backtrace_func("tests/prediction_logprobs/dowaNgo.h5", {532, 82, 380, 197, 238, 462, 96, 388});
+  test_backtrace_func("tests/prediction_logprobs/ishIkI.h5", {551, 259, 132, 404, 111, 418});
+  test_backtrace_func("tests/prediction_logprobs/tasuuketsU.h5", {547, 183, 223, 136, 293, 109, 332, 126, 448});
+}

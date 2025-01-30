@@ -117,29 +117,26 @@ std::vector<float> viterbi_forward(int const len_timeframes, int const num_token
  * @brief backtrace部分
  *
  * @param len_timeframes 時間フレーム数
- * @param num_tokens_with_blank blankトークンを含んだうえでの入力トークン数
- * @param is_transition is_transition[t * num_tokens_with_blank + i] = true: 時刻 t
+ * @param num_tokens_without_blank 入力音素遷移トークン数
+ * @param is_transition is_transition[t * num_tokens_without_blank + i] = true: 時刻 t
  * 時刻tでi番目の音素遷移が起きた
  * @param min_aligned_time 1音素に割り当てる最小時間フレーム数
  * @param transition_timeframes 結果を入力する変数
  * @return int
  */
-int viterbi_backtrace(int const len_timeframes, int const num_tokens_with_blank, std::vector<bool> const is_transition,
-                      int const min_aligned_time, std::vector<int>& transition_timeframes) {
+int viterbi_backtrace(int const len_timeframes, int const num_tokens_without_blank,
+                      std::vector<bool> const& is_transition, int const min_aligned_time,
+                      std::vector<int>& transition_timeframes) {
   int t = len_timeframes - 1;
-  int i = num_tokens_with_blank - 2;
-  while (t >= 0) {
-    if (is_transition[t * num_tokens_with_blank + i]) {
+  int i = num_tokens_without_blank - 1;
+  while (t >= 0 && i >= 0) {
+    if (is_transition[t * num_tokens_without_blank + i]) {
       transition_timeframes[i] = t;
       t -= min_aligned_time;
-      i -= 2;
+      --i;
     } else {
       --t;
     }
-  }
-  if (i != 0) {
-    std::cerr << "[WARN] could not alignement" << std::endl;
-    return 1;
   }
 
   return 0;
