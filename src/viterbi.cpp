@@ -18,9 +18,10 @@
  * @param log_emission_probs
  * @return int
  */
-int viterbi_init(int const len_timeframes, int const num_tokens_with_blank, float const* logprobs_output_by_onnxnetwork,
+int viterbi_init(int const len_timeframes, float const* logprobs_output_by_onnxnetwork,
                  std::vector<int> const& phonemes_index, int const num_transition_vocab, int const blank_id,
                  std::vector<float>& log_emission_probs) {
+  int const num_tokens_with_blank = phonemes_index.size() * 2 + 1;
   for (std::size_t t = 0; t < len_timeframes; ++t) {
     for (std::size_t i = 0; i < num_tokens_with_blank; ++i) {
       if (i % 2 == 0) {
@@ -46,9 +47,26 @@ int viterbi_init(int const len_timeframes, int const num_tokens_with_blank, floa
  * @param min_aligned_time 1音素に割り当てる最小時間フレーム数
  * @return int
  */
-int viterbi_forward(int const len_timeframes, int const num_tokens_with_blank,
-                    std::vector<float> const log_emission_probs, std::vector<bool> is_transition,
-                    int const min_aligned_time) {}
+std::vector<float> viterbi_forward(int const len_timeframes, int const num_tokens_with_blank,
+                                   std::vector<float> const log_emission_probs, std::vector<bool> is_transition,
+                                   int const min_aligned_time) {
+  std::vector<float> forward_logprobs(log_emission_probs.size(), -std::numeric_limits<float>::infinity());
+  std::fill(is_transition.begin(), is_transition.end(), false);
+
+  forward_logprobs[0] = log_emission_probs[0];
+  forward_logprobs[1] = log_emission_probs[1];
+  for (int t = 1; t < len_timeframes; ++t) {
+    forward_logprobs[t * num_tokens_with_blank] =
+        forward_logprobs[(t - 1) * num_tokens_with_blank] + log_emission_probs[t * num_tokens_with_blank];
+  }
+
+  for (int t = 1; t < len_timeframes; ++t) {
+    forward_logprobs[t * num_tokens_with_blank + 1] =
+        forward_logprobs[(t - 1) * num_tokens_with_blank] + log_emission_probs[t * num_tokens_with_blank + 1];
+  }
+
+  return forward_logprobs;
+}
 
 /**
  * @brief backtrace部分
@@ -91,8 +109,8 @@ int solve_viterbi(int const len_time_frame,
                   std::vector<int>& transition_timeframes) {
   int const num_tokens_with_blank = phonemes_index.size() * 2 + 1;
   std::vector<float> log_emission_probs(len_time_frame * num_tokens_with_blank);
-  viterbi_init(len_time_frame, num_tokens_with_blank, logprobs_output_by_onnxnetwork, phonemes_index,
-               num_transition_vocab, blank_id, log_emission_probs);
+  viterbi_init(len_time_frame, logprobs_output_by_onnxnetwork, phonemes_index, num_transition_vocab, blank_id,
+               log_emission_probs);
   std::vector<bool> is_transition(log_emission_probs.size(), false);
   viterbi_forward(len_time_frame, num_tokens_with_blank, log_emission_probs, is_transition,
                   min_match_timeframes_per_1_phoneme);
