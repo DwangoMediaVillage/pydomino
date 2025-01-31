@@ -39,14 +39,12 @@ std::vector<std::tuple<double, double, std::string>> Aligner::align_phonemes(Eig
 
 std::vector<std::tuple<double, double, std::string>> Aligner::align(float const *wav_data,
                                                                     std::size_t const wav_data_size,
-                                                                    std::vector<int> const &token_ids, int N) {
-  if (N < 1) {
-    N = N_;
-  }
-
-  constexpr char const *const input_names[] = {"x"};
-  constexpr char const *const output_names[] = {"y"};
+                                                                    std::vector<int> const &token_ids,
+                                                                    int min_timeframe_per_1_phoneme) {
+  constexpr char const *const input_names[] = {"input_waveform"};
+  constexpr char const *const output_names[] = {"transition_logprobs", "blank_logprobs"};
   // NOTE: C++17以上が必須
+
   std::array<std::int64_t, 2> const wav_data_shape = {1, static_cast<std::int64_t>(wav_data_size)};
   Ort::Value inputs[] = {
       Ort::Value::CreateTensor(memory_info_, const_cast<float *>(wav_data), wav_data_size, wav_data_shape.data(),
@@ -54,14 +52,19 @@ std::vector<std::tuple<double, double, std::string>> Aligner::align(float const 
   };
   std::vector<Ort::Value> const outputs =
       session_.Run(run_options_, input_names, inputs, std::size(input_names), output_names, std::size(output_names));
-  // output y.shape = (1, len_time_frame, num_kind_phonemes)
-  float const *const y = outputs[0].GetTensorData<float>();
-  auto const shape = outputs[0].GetTensorTypeAndShapeInfo().GetShape();
+  float const *const transition_logprobs = outputs[0].GetTensorData<float>();
+  auto const transition_logprobs_shape = outputs[0].GetTensorTypeAndShapeInfo().GetShape();
+  float const *const blank_logprobs = outputs[1].GetTensorData<float>();
+  auto const blank_logprobs_shape = outputs[1].GetTensorTypeAndShapeInfo().GetShape();
 
-  // alignment[i] = [開始時刻, 終了時刻, phonemes_index 上の index(iになります)]
-  int const blank_id = tokenizer.get_blank_id();
+  int const num_timeframe = transition_logprobs_shape[1];
+  if (min_timeframe_per_1_phoneme * (token_ids.size() - 1) + 1 > num_timeframe) {
+    std::cout << "[warn] timeframe / phoneme is too large for alignment. " << std::endl;
+    min_timeframe_per_1_phoneme = (num_timeframe - 1) / (token_ids.size() - 1);
+  }
   std::vector<int> transition_timeframes(token_ids.size(), 0);
-  solve_viterbi(shape[1], shape[2], blank_id, y, N, token_ids, transition_timeframes);
+  solve_viterbi(transition_logprobs_shape[1], transition_logprobs_shape[2], transition_logprobs, blank_logprobs,
+                min_timeframe_per_1_phoneme, token_ids, transition_timeframes);
 
   // 音素遷移トークンの予測発生時刻を音素ラベル表現の形に変換する
   std::vector<std::tuple<double, double, std::string>> alignment;

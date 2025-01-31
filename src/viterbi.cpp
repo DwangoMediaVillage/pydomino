@@ -139,23 +139,21 @@ int viterbi_backtrace(int const len_timeframes, int const num_tokens_without_bla
   return 0;
 }
 
-#if 0
 int solve_viterbi(int const len_time_frame,
-                  int const num_transition_vocab,  // num_vocab
-                  int const blank_id,
-                  float const* logprobs_output_by_onnxnetwork,   // len_time_frame x num_kind_phonemes
+                  int const size_transition_vocab,               // size_transition_vocab
+                  float const* transition_logprobs,              // len_time_frame x size_transition_vocab
+                  float const* blank_logprobs,                   // len_time_frame
                   int const min_match_timeframes_per_1_phoneme,  // min match frame length per 1 phoneme
-                  std::vector<int> const& phonemes_index,        // a int sequence
+                  std::vector<int> const& token_ids,             // a int sequence
                   std::vector<int>& transition_timeframes) {
-  int const num_tokens_with_blank = phonemes_index.size() * 2 + 1;
+  int const num_tokens_with_blank = token_ids.size() * 2 + 1;
   std::vector<float> log_emission_probs(len_time_frame * num_tokens_with_blank);
-  viterbi_init(len_time_frame, logprobs_output_by_onnxnetwork, phonemes_index, num_transition_vocab, blank_id,
+  viterbi_init(transition_logprobs, blank_logprobs, token_ids, len_time_frame, size_transition_vocab,
                log_emission_probs);
   std::vector<bool> is_transition(log_emission_probs.size(), false);
   viterbi_forward(len_time_frame, num_tokens_with_blank, log_emission_probs, is_transition,
                   min_match_timeframes_per_1_phoneme);
-  viterbi_backtrace(len_time_frame, phonemes_index.size(), is_transition, min_match_timeframes_per_1_phoneme,
+  viterbi_backtrace(len_time_frame, token_ids.size(), is_transition, min_match_timeframes_per_1_phoneme,
                     transition_timeframes);
   return 0;
 }
-#endif

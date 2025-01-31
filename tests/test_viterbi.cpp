@@ -62,10 +62,9 @@ float* loadHDF5(const std::string& filename, int& rows) {
   }
 }
 
-Eigen::Matrix<float, -1, -1, Eigen::RowMajor> loadHDF5(std::string const& transition_logprobs_HDF5path,
-                                                       std::string const& blank_logprobs_HDF5path) {
+Eigen::Matrix<float, -1, -1, Eigen::RowMajor> loadHDF5(std::string const& eigen_HDF5path) {
   try {
-    H5::H5File file(transition_logprobs_HDF5path, H5F_ACC_RDONLY);
+    H5::H5File file(eigen_HDF5path, H5F_ACC_RDONLY);
     H5::DataSet dataset = file.openDataSet("array");
 
     // データの次元を取得
@@ -74,9 +73,9 @@ Eigen::Matrix<float, -1, -1, Eigen::RowMajor> loadHDF5(std::string const& transi
     dataspace.getSimpleExtentDims(dims, nullptr);
     size_t rows = dims[0], cols = dims[1];
 
-    Eigen::Matrix<float, -1, -1, Eigen::RowMajor> transition_logprobs(rows, cols);
-    dataset.read(transition_logprobs.data(), H5::PredType::NATIVE_FLOAT);
-    return transition_logprobs;
+    Eigen::Matrix<float, -1, -1, Eigen::RowMajor> logprobs(rows, cols);
+    dataset.read(logprobs.data(), H5::PredType::NATIVE_FLOAT);
+    return logprobs;
   } catch (H5::Exception& e) {
     std::cerr << "HDF5 error: " << e.getDetailMsg() << std::endl;
     return Eigen::Matrix<float, -1, -1, Eigen::RowMajor>();  // エラー時は空行列
@@ -105,16 +104,17 @@ Eigen::Matrix<float, -1, -1, Eigen::RowMajor> init_by_eigen(
 }
 
 void test_init_func(std::string transition_logprobs_HDF5path, std::string blank_logprobs_HDF5path,
-                    std::vector<int> const token_ids) {
+                    std::string eigen_HDF5path, std::vector<int> const token_ids) {
   int len_timeframes, num_transition_vocabs, blank_len_timeframes;
   float const* transition_logprobs = loadHDF5(transition_logprobs_HDF5path, len_timeframes, num_transition_vocabs);
   float const* blank_logprobs = loadHDF5(blank_logprobs_HDF5path, blank_len_timeframes);
 
-  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> transition_logprobs_matrix(len_timeframes, num_transition_vocabs);
-  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> blank_logprobs_matrix(len_timeframes, 1);
-  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> input_matrix(len_timeframes, num_transition_vocabs + 2);
-  input_matrix << blank_logprobs_matrix << transition_logprobs << blank_logprobs_matrix;
-  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> expected = init_by_eigen(input_matrix, token_ids, 557);
+  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> input_matrix = loadHDF5(eigen_HDF5path);
+  std::vector<int> eigen_token_ids;
+  for (auto const& token_id : token_ids) {
+    eigen_token_ids.push_back(token_id + 1);
+  }
+  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> expected = init_by_eigen(input_matrix, eigen_token_ids, 557);
   ASSERT_EQ(len_timeframes, blank_len_timeframes);
   std::vector<float> log_emission_probs(len_timeframes * (token_ids.size() * 2 + 1));
   viterbi_init(transition_logprobs, blank_logprobs, token_ids, len_timeframes, 556, log_emission_probs);
@@ -129,15 +129,15 @@ void test_init_func(std::string transition_logprobs_HDF5path, std::string blank_
 TEST(Test_ViterbiAlgorithm, test_init) {
   std::filesystem::current_path("../../");
   test_init_func("tests/prediction_logprobs/dowaNgo_transition_logprobs.h5",
-                 "tests/prediction_logprobs/dowaNgo_blank_logprobs.h5", {531, 81, 379, 196, 237, 461, 95, 387});
+                 "tests/prediction_logprobs/dowaNgo_blank_logprobs.h5", "tests/prediction_logprobs/dowaNgo.h5",
+                 {531, 81, 379, 196, 237, 461, 95, 387});
   test_init_func("tests/prediction_logprobs/ishIkI_transition_logprobs.h5",
-                 "tests/prediction_logprobs/ishIkI_blank_logprobs.h5", {550, 258, 131, 403, 110, 417});
+                 "tests/prediction_logprobs/ishIkI_blank_logprobs.h5", "tests/prediction_logprobs/ishIkI.h5",
+                 {550, 258, 131, 403, 110, 417});
   test_init_func("tests/prediction_logprobs/tasuuketsU_transition_logprobs.h5",
-                 "tests/prediction_logprobs/tasuuketsU_blank_logprobs.h5",
+                 "tests/prediction_logprobs/tasuuketsU_blank_logprobs.h5", "tests/prediction_logprobs/tasuuketsU.h5",
                  {546, 182, 222, 135, 292, 108, 331, 125, 447});
 }
-
-#if 0
 
 std::tuple<Eigen::Matrix<bool, -1, -1, Eigen::RowMajor>, Eigen::Matrix<float, -1, -1, Eigen::RowMajor>>
 forward_by_eigen(Eigen::Ref<Eigen::Matrix<float, -1, -1, Eigen::RowMajor>> const dist, int const minimum_align_length) {
@@ -199,36 +199,43 @@ forward_by_eigen(Eigen::Ref<Eigen::Matrix<float, -1, -1, Eigen::RowMajor>> const
   return std::make_tuple(is_transition, forward_logprobs);
 }
 
-void test_forward_func(std::string HDF5path, std::vector<int> const token_ids) {
-  int rows, cols;
-  float const* y = loadHDF5(HDF5path, rows, cols);
-  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> m = loadHDF5(HDF5path);
+void test_forward_func(std::string transition_logprobs_HDF5path, std::string blank_logprobs_HDF5path,
+                       std::string eigen_HDF5path, std::vector<int> const token_ids) {
+  int len_timeframes, num_transition_vocabs, blank_len_timeframes;
+  float const* transition_logprobs = loadHDF5(transition_logprobs_HDF5path, len_timeframes, num_transition_vocabs);
+  float const* blank_logprobs = loadHDF5(blank_logprobs_HDF5path, blank_len_timeframes);
 
-  int const blank_id = 557;
-  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> log_emission_probs_by_eigen = init_by_eigen(m, token_ids, blank_id);
-  std::vector<float> log_emission_probs(rows * (cols * 2 + 1));
+  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> input_matrix = loadHDF5(eigen_HDF5path);
+  std::vector<int> eigen_token_ids;
+  for (auto const& token_id : token_ids) {
+    eigen_token_ids.push_back(token_id + 1);
+  }
+  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> log_emission_probs_by_eigen =
+      init_by_eigen(input_matrix, eigen_token_ids, 557);
+  ASSERT_EQ(len_timeframes, blank_len_timeframes);
+  std::vector<float> log_emission_probs(len_timeframes * (token_ids.size() * 2 + 1));
+  viterbi_init(transition_logprobs, blank_logprobs, token_ids, len_timeframes, 556, log_emission_probs);
+
   int const num_tokens_with_blank = token_ids.size() * 2 + 1;
-  viterbi_init(rows, y, token_ids, 558, blank_id, log_emission_probs);
-
   for (int minimum_align_length = 1; minimum_align_length < 8; ++minimum_align_length) {
     std::tuple<Eigen::Matrix<bool, -1, -1, Eigen::RowMajor>, Eigen::Matrix<float, -1, -1, Eigen::RowMajor>>
         result_eigen = forward_by_eigen(log_emission_probs_by_eigen, minimum_align_length);
 
-    std::vector<bool> is_transition(rows * token_ids.size());
+    std::vector<bool> is_transition(len_timeframes * token_ids.size());
     std::vector<float> const forward_logprobs =
-        viterbi_forward(rows, token_ids.size() * 2 + 1, log_emission_probs, is_transition, minimum_align_length);
+        viterbi_forward(len_timeframes, num_tokens_with_blank, log_emission_probs, is_transition, minimum_align_length);
 
     Eigen::Matrix<bool, -1, -1, Eigen::RowMajor> expected_is_transit = std::get<0>(result_eigen);
     Eigen::Matrix<float, -1, -1, Eigen::RowMajor> expected_forward_logprobs = std::get<1>(result_eigen);
 
     for (int j = 0; j < token_ids.size(); ++j) {
-      for (int t = 0; t < rows; ++t) {
+      for (int t = 0; t < len_timeframes; ++t) {
         ASSERT_EQ(is_transition[t * token_ids.size() + j], expected_is_transit(t, j))
             << "Error: Emerged at t = " << t << ", token_idx = " << j << ", N=" << minimum_align_length;
       }
     }
     for (int j = 0; j < num_tokens_with_blank; ++j) {
-      for (int t = 0; t < rows; ++t) {
+      for (int t = 0; t < len_timeframes; ++t) {
         ASSERT_EQ(forward_logprobs[t * num_tokens_with_blank + j], expected_forward_logprobs(t, j))
             << "Error: Emerged at t = " << t << ", token_idx = " << j << ", N=" << minimum_align_length;
       }
@@ -238,14 +245,15 @@ void test_forward_func(std::string HDF5path, std::vector<int> const token_ids) {
 
 TEST(Test_ViterbiAlgorithm, test_forward) {
   test_forward_func("tests/prediction_logprobs/dowaNgo_transition_logprobs.h5",
-                    "tests/prediction_logprobs/dowaNgo_blank_logprobs.h5", {531, 81, 379, 196, 237, 461, 95, 387});
+                    "tests/prediction_logprobs/dowaNgo_blank_logprobs.h5", "tests/prediction_logprobs/dowaNgo.h5",
+                    {531, 81, 379, 196, 237, 461, 95, 387});
   test_forward_func("tests/prediction_logprobs/ishIkI_transition_logprobs.h5",
-                    "tests/prediction_logprobs/ishIkI_blank_logprobs.h5", {550, 258, 131, 403, 110, 417});
+                    "tests/prediction_logprobs/ishIkI_blank_logprobs.h5", "tests/prediction_logprobs/ishIkI.h5",
+                    {550, 258, 131, 403, 110, 417});
   test_forward_func("tests/prediction_logprobs/tasuuketsU_transition_logprobs.h5",
-                    "tests/prediction_logprobs/tasuuketsU_blank_logprobs.h5",
+                    "tests/prediction_logprobs/tasuuketsU_blank_logprobs.h5", "tests/prediction_logprobs/tasuuketsU.h5",
                     {546, 182, 222, 135, 292, 108, 331, 125, 447});
 }
-
 /**
  * @brief viterbiアルゴリズムのbacktrace部分を定義する
  *
@@ -274,28 +282,37 @@ std::vector<int> backtrace_by_eigen(Eigen::Ref<Eigen::Matrix<bool, -1, -1, Eigen
   return transition_timeframes;
 }
 
-void test_backtrace_func(std::string HDF5path, std::vector<int> const token_ids) {
-  int rows, cols;
-  float const* y = loadHDF5(HDF5path, rows, cols);
-  const int len_timeframe = rows;
-  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> m = loadHDF5(HDF5path);
+void test_backtrace_func(std::string transition_logprobs_HDF5path, std::string blank_logprobs_HDF5path,
+                         std::string eigen_HDF5path, std::vector<int> const token_ids) {
+  int len_timeframes, num_transition_vocabs, blank_len_timeframes;
+  float const* transition_logprobs = loadHDF5(transition_logprobs_HDF5path, len_timeframes, num_transition_vocabs);
+  float const* blank_logprobs = loadHDF5(blank_logprobs_HDF5path, blank_len_timeframes);
 
-  int const blank_id = 557;
-  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> log_emission_probs_by_eigen = init_by_eigen(m, token_ids, blank_id);
-  std::vector<float> log_emission_probs(len_timeframe * (cols * 2 + 1));
+  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> input_matrix = loadHDF5(eigen_HDF5path);
+  std::vector<int> eigen_token_ids;
+  for (auto const& token_id : token_ids) {
+    eigen_token_ids.push_back(token_id + 1);
+  }
+  Eigen::Matrix<float, -1, -1, Eigen::RowMajor> log_emission_probs_by_eigen =
+      init_by_eigen(input_matrix, eigen_token_ids, 557);
+  ASSERT_EQ(len_timeframes, blank_len_timeframes);
+  std::vector<float> log_emission_probs(len_timeframes * (token_ids.size() * 2 + 1));
+  viterbi_init(transition_logprobs, blank_logprobs, token_ids, len_timeframes, 556, log_emission_probs);
+
   int const num_tokens_with_blank = token_ids.size() * 2 + 1;
-  viterbi_init(len_timeframe, y, token_ids, 558, blank_id, log_emission_probs);
-
   for (int minimum_align_length = 1; minimum_align_length < 8; ++minimum_align_length) {
     std::tuple<Eigen::Matrix<bool, -1, -1, Eigen::RowMajor>, Eigen::Matrix<float, -1, -1, Eigen::RowMajor>>
         result_eigen = forward_by_eigen(log_emission_probs_by_eigen, minimum_align_length);
-    std::vector<bool> is_transition(len_timeframe * token_ids.size());
-    viterbi_forward(len_timeframe, token_ids.size() * 2 + 1, log_emission_probs, is_transition, minimum_align_length);
+
+    std::vector<bool> is_transition(len_timeframes * token_ids.size());
+    std::vector<float> const forward_logprobs =
+        viterbi_forward(len_timeframes, num_tokens_with_blank, log_emission_probs, is_transition, minimum_align_length);
+
     Eigen::Matrix<bool, -1, -1, Eigen::RowMajor> is_transit_by_eigen = std::get<0>(result_eigen);
 
     std::vector<int> expected_timeframes = backtrace_by_eigen(is_transit_by_eigen, minimum_align_length);
     std::vector<int> output_timeframes(token_ids.size(), 0);
-    viterbi_backtrace(len_timeframe, token_ids.size(), is_transition, minimum_align_length, output_timeframes);
+    viterbi_backtrace(len_timeframes, token_ids.size(), is_transition, minimum_align_length, output_timeframes);
 
     ASSERT_EQ(output_timeframes.size(), expected_timeframes.size());
     for (int i = 0; i < expected_timeframes.size(); ++i) {
@@ -306,11 +323,12 @@ void test_backtrace_func(std::string HDF5path, std::vector<int> const token_ids)
 
 TEST(Test_ViterbiAlgorithm, test_backtrace) {
   test_backtrace_func("tests/prediction_logprobs/dowaNgo_transition_logprobs.h5",
-                      "tests/prediction_logprobs/dowaNgo_blank_logprobs.h5", {531, 81, 379, 196, 237, 461, 95, 387});
+                      "tests/prediction_logprobs/dowaNgo_blank_logprobs.h5", "tests/prediction_logprobs/dowaNgo.h5",
+                      {531, 81, 379, 196, 237, 461, 95, 387});
   test_backtrace_func("tests/prediction_logprobs/ishIkI_transition_logprobs.h5",
-                      "tests/prediction_logprobs/ishIkI_blank_logprobs.h5", {550, 258, 131, 403, 110, 417});
+                      "tests/prediction_logprobs/ishIkI_blank_logprobs.h5", "tests/prediction_logprobs/ishIkI.h5",
+                      {550, 258, 131, 403, 110, 417});
   test_backtrace_func("tests/prediction_logprobs/tasuuketsU_transition_logprobs.h5",
                       "tests/prediction_logprobs/tasuuketsU_blank_logprobs.h5",
-                      {546, 182, 222, 135, 292, 108, 331, 125, 447});
+                      "tests/prediction_logprobs/tasuuketsU.h5", {546, 182, 222, 135, 292, 108, 331, 125, 447});
 }
-#endif
