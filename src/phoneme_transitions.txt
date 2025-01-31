@@ -1,558 +1,558 @@
 0-padding
-ry->a
-ry->i
-ry->u
-ry->e
-ry->o
-ry->I
-ry->U
-r->a
-r->i
-r->u
-r->e
-r->o
-r->I
-r->U
-my->a
-my->i
-my->u
-my->e
-my->o
-my->I
-my->U
-m->a
-m->i
-m->u
-m->e
-m->o
-m->I
-m->U
-ny->a
-ny->i
-ny->u
-ny->e
-ny->o
-ny->I
-ny->U
-n->a
-n->i
-n->u
-n->e
-n->o
-n->I
-n->U
-j->a
-j->i
-j->u
-j->e
-j->o
-j->I
-j->U
-z->a
-z->i
-z->u
-z->e
-z->o
-z->I
-z->U
-by->a
-by->i
-by->u
-by->e
-by->o
-by->I
-by->U
-b->a
-b->i
-b->u
-b->e
-b->o
-b->I
-b->U
-dy->a
-dy->i
-dy->u
-dy->e
-dy->o
-dy->I
-dy->U
-d->a
-d->i
-d->u
-d->e
-d->o
-d->I
-d->U
-gy->a
-gy->i
-gy->u
-gy->e
-gy->o
-gy->I
-gy->U
-g->a
-g->i
-g->u
-g->e
-g->o
-g->I
-g->U
-ky->a
-ky->i
-ky->u
-ky->e
-ky->o
-ky->I
-ky->U
-k->a
-k->i
-k->u
-k->e
-k->o
-k->I
-k->U
-ch->a
-ch->i
-ch->u
-ch->e
-ch->o
-ch->I
-ch->U
-ts->a
-ts->i
-ts->u
-ts->e
-ts->o
-ts->I
-ts->U
-sh->a
-sh->i
-sh->u
-sh->e
-sh->o
-sh->I
-sh->U
-s->a
-s->i
-s->u
-s->e
-s->o
-s->I
-s->U
-hy->a
-hy->i
-hy->u
-hy->e
-hy->o
-hy->I
-hy->U
-h->a
-h->i
-h->u
-h->e
-h->o
-h->I
-h->U
-v->a
-v->i
-v->u
-v->e
-v->o
-v->I
-v->U
-f->a
-f->i
-f->u
-f->e
-f->o
-f->I
-f->U
-py->a
-py->i
-py->u
-py->e
-py->o
-py->I
-py->U
-p->a
-p->i
-p->u
-p->e
-p->o
-p->I
-p->U
-t->a
-t->i
-t->u
-t->e
-t->o
-t->I
-t->U
-y->a
-y->i
-y->u
-y->e
-y->o
-y->I
-y->U
-w->a
-w->i
-w->u
-w->e
-w->o
-w->I
-w->U
-a->ry
-a->r
-a->my
-a->m
-a->ny
-a->n
-a->j
-a->z
-a->by
-a->b
-a->dy
-a->d
-a->gy
-a->g
-a->ky
-a->k
-a->ch
-a->ts
-a->sh
-a->s
-a->hy
-a->h
-a->v
-a->f
-a->py
-a->p
-a->t
-a->y
-a->w
-a->a
-a->i
-a->u
-a->e
-a->o
-a->N
-a->cl
-a->pau
-i->ry
-i->r
-i->my
-i->m
-i->ny
-i->n
-i->j
-i->z
-i->by
-i->b
-i->dy
-i->d
-i->gy
-i->g
-i->ky
-i->k
-i->ch
-i->ts
-i->sh
-i->s
-i->hy
-i->h
-i->v
-i->f
-i->py
-i->p
-i->t
-i->y
-i->w
-i->a
-i->i
-i->u
-i->e
-i->o
-i->N
-i->cl
-i->pau
-u->ry
-u->r
-u->my
-u->m
-u->ny
-u->n
-u->j
-u->z
-u->by
-u->b
-u->dy
-u->d
-u->gy
-u->g
-u->ky
-u->k
-u->ch
-u->ts
-u->sh
-u->s
-u->hy
-u->h
-u->v
-u->f
-u->py
-u->p
-u->t
-u->y
-u->w
-u->a
-u->i
-u->u
-u->e
-u->o
-u->N
-u->cl
-u->pau
-e->ry
-e->r
-e->my
-e->m
-e->ny
-e->n
-e->j
-e->z
-e->by
-e->b
-e->dy
-e->d
-e->gy
-e->g
-e->ky
-e->k
-e->ch
-e->ts
-e->sh
-e->s
-e->hy
-e->h
-e->v
-e->f
-e->py
-e->p
-e->t
-e->y
-e->w
-e->a
-e->i
-e->u
-e->e
-e->o
-e->N
-e->cl
-e->pau
-o->ry
-o->r
-o->my
-o->m
-o->ny
-o->n
-o->j
-o->z
-o->by
-o->b
-o->dy
-o->d
-o->gy
-o->g
-o->ky
-o->k
-o->ch
-o->ts
-o->sh
-o->s
-o->hy
-o->h
-o->v
-o->f
-o->py
-o->p
-o->t
-o->y
-o->w
-o->a
-o->i
-o->u
-o->e
-o->o
-o->N
-o->cl
-o->pau
-I->ry
-I->r
-I->my
-I->m
-I->ny
-I->n
-I->j
-I->z
-I->by
-I->b
-I->dy
-I->d
-I->gy
-I->g
-I->ky
-I->k
-I->ch
-I->ts
-I->sh
-I->s
-I->hy
-I->h
-I->v
-I->f
-I->py
-I->p
-I->t
-I->y
-I->w
-I->pau
-U->ry
-U->r
-U->my
-U->m
-U->ny
-U->n
-U->j
-U->z
-U->by
-U->b
-U->dy
-U->d
-U->gy
-U->g
-U->ky
-U->k
-U->ch
-U->ts
-U->sh
-U->s
-U->hy
-U->h
-U->v
-U->f
-U->py
-U->p
-U->t
-U->y
-U->w
-U->pau
-N->ry
-N->r
-N->my
-N->m
-N->ny
-N->n
-N->j
-N->z
-N->by
-N->b
-N->dy
-N->d
-N->gy
-N->g
-N->ky
-N->k
-N->ch
-N->ts
-N->sh
-N->s
-N->hy
-N->h
-N->v
-N->f
-N->py
-N->p
-N->t
-N->y
-N->w
-N->a
-N->i
-N->u
-N->e
-N->o
-N->cl
-N->pau
-cl->ry
-cl->r
-cl->my
-cl->m
-cl->ny
-cl->n
-cl->j
-cl->z
-cl->by
-cl->b
-cl->dy
-cl->d
-cl->gy
-cl->g
-cl->ky
-cl->k
-cl->ch
-cl->ts
-cl->sh
-cl->s
-cl->hy
-cl->h
-cl->v
-cl->f
-cl->py
-cl->p
-cl->t
-cl->y
-cl->w
-cl->a
-cl->i
-cl->u
-cl->e
-cl->o
-cl->N
-cl->pau
-pau->ry
-pau->r
-pau->my
-pau->m
-pau->ny
-pau->n
-pau->j
-pau->z
-pau->by
-pau->b
-pau->dy
-pau->d
-pau->gy
-pau->g
-pau->ky
-pau->k
-pau->ch
-pau->ts
-pau->sh
-pau->s
-pau->hy
-pau->h
-pau->v
-pau->f
-pau->py
-pau->p
-pau->t
-pau->y
-pau->w
-pau->a
-pau->i
-pau->u
-pau->e
-pau->o
-pau->N
-pau->cl
+ry a
+ry i
+ry u
+ry e
+ry o
+ry I
+ry U
+r a
+r i
+r u
+r e
+r o
+r I
+r U
+my a
+my i
+my u
+my e
+my o
+my I
+my U
+m a
+m i
+m u
+m e
+m o
+m I
+m U
+ny a
+ny i
+ny u
+ny e
+ny o
+ny I
+ny U
+n a
+n i
+n u
+n e
+n o
+n I
+n U
+j a
+j i
+j u
+j e
+j o
+j I
+j U
+z a
+z i
+z u
+z e
+z o
+z I
+z U
+by a
+by i
+by u
+by e
+by o
+by I
+by U
+b a
+b i
+b u
+b e
+b o
+b I
+b U
+dy a
+dy i
+dy u
+dy e
+dy o
+dy I
+dy U
+d a
+d i
+d u
+d e
+d o
+d I
+d U
+gy a
+gy i
+gy u
+gy e
+gy o
+gy I
+gy U
+g a
+g i
+g u
+g e
+g o
+g I
+g U
+ky a
+ky i
+ky u
+ky e
+ky o
+ky I
+ky U
+k a
+k i
+k u
+k e
+k o
+k I
+k U
+ch a
+ch i
+ch u
+ch e
+ch o
+ch I
+ch U
+ts a
+ts i
+ts u
+ts e
+ts o
+ts I
+ts U
+sh a
+sh i
+sh u
+sh e
+sh o
+sh I
+sh U
+s a
+s i
+s u
+s e
+s o
+s I
+s U
+hy a
+hy i
+hy u
+hy e
+hy o
+hy I
+hy U
+h a
+h i
+h u
+h e
+h o
+h I
+h U
+v a
+v i
+v u
+v e
+v o
+v I
+v U
+f a
+f i
+f u
+f e
+f o
+f I
+f U
+py a
+py i
+py u
+py e
+py o
+py I
+py U
+p a
+p i
+p u
+p e
+p o
+p I
+p U
+t a
+t i
+t u
+t e
+t o
+t I
+t U
+y a
+y i
+y u
+y e
+y o
+y I
+y U
+w a
+w i
+w u
+w e
+w o
+w I
+w U
+a ry
+a r
+a my
+a m
+a ny
+a n
+a j
+a z
+a by
+a b
+a dy
+a d
+a gy
+a g
+a ky
+a k
+a ch
+a ts
+a sh
+a s
+a hy
+a h
+a v
+a f
+a py
+a p
+a t
+a y
+a w
+a a
+a i
+a u
+a e
+a o
+a N
+a cl
+a pau
+i ry
+i r
+i my
+i m
+i ny
+i n
+i j
+i z
+i by
+i b
+i dy
+i d
+i gy
+i g
+i ky
+i k
+i ch
+i ts
+i sh
+i s
+i hy
+i h
+i v
+i f
+i py
+i p
+i t
+i y
+i w
+i a
+i i
+i u
+i e
+i o
+i N
+i cl
+i pau
+u ry
+u r
+u my
+u m
+u ny
+u n
+u j
+u z
+u by
+u b
+u dy
+u d
+u gy
+u g
+u ky
+u k
+u ch
+u ts
+u sh
+u s
+u hy
+u h
+u v
+u f
+u py
+u p
+u t
+u y
+u w
+u a
+u i
+u u
+u e
+u o
+u N
+u cl
+u pau
+e ry
+e r
+e my
+e m
+e ny
+e n
+e j
+e z
+e by
+e b
+e dy
+e d
+e gy
+e g
+e ky
+e k
+e ch
+e ts
+e sh
+e s
+e hy
+e h
+e v
+e f
+e py
+e p
+e t
+e y
+e w
+e a
+e i
+e u
+e e
+e o
+e N
+e cl
+e pau
+o ry
+o r
+o my
+o m
+o ny
+o n
+o j
+o z
+o by
+o b
+o dy
+o d
+o gy
+o g
+o ky
+o k
+o ch
+o ts
+o sh
+o s
+o hy
+o h
+o v
+o f
+o py
+o p
+o t
+o y
+o w
+o a
+o i
+o u
+o e
+o o
+o N
+o cl
+o pau
+I ry
+I r
+I my
+I m
+I ny
+I n
+I j
+I z
+I by
+I b
+I dy
+I d
+I gy
+I g
+I ky
+I k
+I ch
+I ts
+I sh
+I s
+I hy
+I h
+I v
+I f
+I py
+I p
+I t
+I y
+I w
+I pau
+U ry
+U r
+U my
+U m
+U ny
+U n
+U j
+U z
+U by
+U b
+U dy
+U d
+U gy
+U g
+U ky
+U k
+U ch
+U ts
+U sh
+U s
+U hy
+U h
+U v
+U f
+U py
+U p
+U t
+U y
+U w
+U pau
+N ry
+N r
+N my
+N m
+N ny
+N n
+N j
+N z
+N by
+N b
+N dy
+N d
+N gy
+N g
+N ky
+N k
+N ch
+N ts
+N sh
+N s
+N hy
+N h
+N v
+N f
+N py
+N p
+N t
+N y
+N w
+N a
+N i
+N u
+N e
+N o
+N cl
+N pau
+cl ry
+cl r
+cl my
+cl m
+cl ny
+cl n
+cl j
+cl z
+cl by
+cl b
+cl dy
+cl d
+cl gy
+cl g
+cl ky
+cl k
+cl ch
+cl ts
+cl sh
+cl s
+cl hy
+cl h
+cl v
+cl f
+cl py
+cl p
+cl t
+cl y
+cl w
+cl a
+cl i
+cl u
+cl e
+cl o
+cl N
+cl pau
+pau ry
+pau r
+pau my
+pau m
+pau ny
+pau n
+pau j
+pau z
+pau by
+pau b
+pau dy
+pau d
+pau gy
+pau g
+pau ky
+pau k
+pau ch
+pau ts
+pau sh
+pau s
+pau hy
+pau h
+pau v
+pau f
+pau py
+pau p
+pau t
+pau y
+pau w
+pau a
+pau i
+pau u
+pau e
+pau o
+pau N
+pau cl
 blank

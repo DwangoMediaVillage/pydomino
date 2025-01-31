@@ -13,7 +13,7 @@
 namespace domino {
 class Aligner {
  public:
-  Aligner(std::string const& path, int const N = 5);
+  Aligner(std::string const& path, int const N = 3);
   ~Aligner();
 
   void release();
@@ -24,8 +24,8 @@ class Aligner {
   std::vector<std::tuple<double, double, std::string>> align(float const* wav_data, std::size_t const wav_data_size,
                                                              std::vector<int> const& phonemes_index, int N = 0);
 
-  static std::vector<int> read_phonemes(std::filesystem::path const& file);
-  static std::vector<int> read_phonemes(std::string const& s);
+  std::vector<int> read_phonemes(std::filesystem::path const& file);
+  std::vector<int> read_phonemes(std::string const& s);
 
  private:
   Ort::Env env_;
@@ -33,8 +33,8 @@ class Aligner {
   Ort::Session session_;
   Ort::MemoryInfo memory_info_;
   Ort::RunOptions run_options_;
-  PhonemeTransitionTokenizer tokenizer = PhonemeTransitionTokenizer();
 
   int const N_;
+  PhonemeTransitionTokenizer tokenizer = PhonemeTransitionTokenizer();
 };
 }  // namespace domino

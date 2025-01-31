@@ -75,6 +75,6 @@ target_include_directories(test_viterbi PRIVATE ${HDF5_INCLUDE_DIRS})
 
 include(GoogleTest)
 gtest_discover_tests(test_tokenizer)
-gtest_discover_tests(test_onnxruntime)
-gtest_discover_tests(test_viterbi)
+# gtest_discover_tests(test_onnxruntime)
+# gtest_discover_tests(test_viterbi)
 

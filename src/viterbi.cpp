@@ -156,7 +156,7 @@ int solve_viterbi(int const len_time_frame,
   std::vector<bool> is_transition(log_emission_probs.size(), false);
   viterbi_forward(len_time_frame, num_tokens_with_blank, log_emission_probs, is_transition,
                   min_match_timeframes_per_1_phoneme);
-  viterbi_backtrace(len_time_frame, num_tokens_with_blank, is_transition, min_match_timeframes_per_1_phoneme,
+  viterbi_backtrace(len_time_frame, phonemes_index.size(), is_transition, min_match_timeframes_per_1_phoneme,
                     transition_timeframes);
   return 0;
 }

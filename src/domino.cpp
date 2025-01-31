@@ -59,18 +59,20 @@ std::vector<std::tuple<double, double, std::string>> Aligner::align(float const 
   auto const shape = outputs[0].GetTensorTypeAndShapeInfo().GetShape();
 
   // alignment[i] = [開始時刻, 終了時刻, phonemes_index 上の index(iになります)]
-  std::vector<std::tuple<float, float, int>> alignment;
-  solve_viterbi(shape[1], shape[2], y, N, token_ids, alignment);
-  if (alignment.empty()) {
-    throw std::runtime_error("empty alignment");
-  }
+  int const blank_id = tokenizer.get_blank_id();
+  std::vector<int> transition_timeframes(token_ids.size(), 0);
+  solve_viterbi(shape[1], shape[2], blank_id, y, N, token_ids, transition_timeframes);
 
-  // TODO: 音素をIDから文字列に変換する
-  std::vector<std::tuple<double, double, std::string>> labels(alignment.size());
-  std::transform(alignment.begin(), alignment.end(), labels.begin(), [&](std::tuple<double, double, int> const &elem) {
-    return std::make_tuple(std::get<0>(elem), std::get<1>(elem), token_ids[phonemes_index[std::get<2>(elem)]]);
-  });
-  return labels；
+  // 音素遷移トークンの予測発生時刻を音素ラベル表現の形に変換する
+  std::vector<std::tuple<double, double, std::string>> alignment;
+  float begin_sec = 0.0;
+  std::vector<std::string> phonemes = tokenizer.to_phonemes(token_ids);
+  for (int i = 0; i < token_ids.size(); ++i) {
+    alignment.push_back(std::make_tuple(begin_sec, float(transition_timeframes[i]) / 100, phonemes[i]));
+    begin_sec = float(transition_timeframes[i]) / 100;
+  }
+  alignment.push_back(std::make_tuple(begin_sec, float(wav_data_size) / 16000, phonemes[token_ids.size()]));
+  return alignment;
 }
 
 std::vector<int> Aligner::read_phonemes(std::filesystem::path const &file) {

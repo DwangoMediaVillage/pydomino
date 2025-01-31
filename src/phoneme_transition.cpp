@@ -25,14 +25,20 @@ PhonemeTransitionTokenizer::PhonemeTransitionTokenizer() {
     throw std::runtime_error("src/phoneme_transitions.txt cannot be opened.");
   }
 
-  std::string transition_token;
+  std::string line;
   int token_id = 0;
   id_to_token_map.reserve(558);  // 音素遷移の総数
-  while (std::getline(tokenlist_file, transition_token)) {
-    token_to_id_map[transition_token] = token_id++;
-    id_to_token_map.push_back(transition_token);
-  }
+  while (std::getline(tokenlist_file, line)) {
+    std::vector<std::string> phonemes;
+    std::stringstream ss(line);
+    std::string phoneme;
+    while (std::getline(ss, phoneme, ' ')) {
+      phonemes.push_back(phoneme);
+    }
+    PhonemeTransition transition = PhonemeTransition{phonemes[0], phonemes[1]};
 
+    id_to_token_map.push_back(transition);
+  }
   tokenlist_file.close();
 }
 
@@ -48,6 +54,26 @@ void PhonemeTransitionTokenizer::insert_pause_both_ends_if_not_exists(std::vecto
   if (phonemes[phonemes.size() - 1] != "pau") {
     phonemes.insert(phonemes.end(), "pau");
   }
+}
+
+/**
+ * @brief 音素遷移トークン列から音素列への変換
+ *
+ * @param token_ids
+ * @return std::vector<std::string>
+ */
+std::vector<std::string> PhonemeTransitionTokenizer::to_phonemes(std::vector<int> const &token_ids) {
+  std::vector<std::string> retval;
+  for (int i = 0; i < token_ids.size(); ++i) {
+    PhonemeTransition transition = id_to_token_map[i];
+    if (i == 0) {
+      retval.push_back(transition.from_phoneme);
+      retval.push_back(transition.to_phoneme);
+    } else {
+      retval.push_back(transition.to_phoneme);
+    }
+  }
+  return retval;
 }
 
 /**
@@ -113,8 +139,8 @@ std::vector<int> PhonemeTransitionTokenizer::read_phonemes(std::istream &ss) {
     unique_consecutive(phonemes);
 
     for (int i = 1; i < phonemes.size(); ++i) {
-      std::cout << phonemes[i - 1] + "->" + phonemes[i] << std::endl;
-      phonemes_index.push_back(token_to_id_map[phonemes[i - 1] + "->" + phonemes[i]]);
+      PhonemeTransition transition = PhonemeTransition{phonemes[i - 1], phonemes[i]};
+      phonemes_index.push_back(get_id_from_token(transition));
     }
   }
   return phonemes_index;
