@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
     program.parse_args(argc, argv);
 
     {
-      domino::Aligner aligner("onnx_model/model.onnx");
+      domino::Aligner aligner("onnx_model/phoneme_trantision_model_2.onnx");
 
       int const N = program.get<int>("-N");
 
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
             std::filesystem::path const txt_file = with_suffix(wav_file, ".txt");
             std::filesystem::path const lab_file = with_suffix(wav_file, ".lab", output_dir);
             std::filesystem::path const log_file = with_suffix(lab_file, ".log");
-            std::vector<int> const phonemes_index = domino::Aligner::read_phonemes(txt_file);
+            std::vector<int> const phonemes_index = aligner.read_phonemes(txt_file);
 
             std::vector<float> wav_data;
             int load_result = load_wav(wav_file_str.c_str(), wav_data);
@@ -110,8 +110,8 @@ int main(int argc, char *argv[]) {
 
           std::vector<int> const phonemes_index =
               program.present<std::string>("--input_phoneme")
-                  ? domino::Aligner::read_phonemes(program.present<std::string>("--input_phoneme").value())
-                  : domino::Aligner::read_phonemes(txt_file);
+                  ? aligner.read_phonemes(program.present<std::string>("--input_phoneme").value())
+                  : aligner.read_phonemes(txt_file);
 
           std::vector<float> wav_data;
           int load_result = load_wav(wav_file_str.c_str(), wav_data);
