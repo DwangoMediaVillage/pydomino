@@ -26,8 +26,7 @@ PhonemeTransitionTokenizer::PhonemeTransitionTokenizer() {
   }
 
   std::string line;
-  int token_id = 0;
-  id_to_token_map.reserve(558);  // 音素遷移の総数
+  id_to_token_map.reserve(556);  // 音素遷移の総数
   while (std::getline(tokenlist_file, line)) {
     std::vector<std::string> phonemes;
     std::stringstream ss(line);
@@ -65,7 +64,7 @@ void PhonemeTransitionTokenizer::insert_pause_both_ends_if_not_exists(std::vecto
 std::vector<std::string> PhonemeTransitionTokenizer::to_phonemes(std::vector<int> const &token_ids) {
   std::vector<std::string> retval;
   for (int i = 0; i < token_ids.size(); ++i) {
-    PhonemeTransition transition = id_to_token_map[i];
+    PhonemeTransition transition = id_to_token_map[token_ids[i]];
     if (i == 0) {
       retval.push_back(transition.from_phoneme);
       retval.push_back(transition.to_phoneme);
@@ -123,6 +122,16 @@ void PhonemeTransitionTokenizer::unique_consecutive(std::vector<std::string> &ph
   }
   results.push_back(phonemes[phonemes.size() - 1]);
   phonemes.swap(results);
+}
+
+int PhonemeTransitionTokenizer::get_id_from_token(PhonemeTransition transition) {
+  for (int i = 0; i < id_to_token_map.size(); ++i) {
+    if (id_to_token_map[i] == transition) {
+      return i;
+    }
+  }
+  throw std::runtime_error("Transition from " + transition.from_phoneme + " to " + transition.to_phoneme +
+                           " is not defined.");
 }
 
 std::vector<int> PhonemeTransitionTokenizer::read_phonemes(std::istream &ss) {

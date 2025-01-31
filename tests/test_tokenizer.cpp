@@ -62,8 +62,8 @@ void test_read_phonemes_func(std::string input, std::vector<int> expected) {
 }
 
 TEST(Test_PhonemeTransitionTokenizer, test_read_phonemes) {
-  test_read_phonemes_func("pau t a s u u k e ts u pau", {547, 183, 223, 136, 293, 109, 332, 126, 448});
-  test_read_phonemes_func("pau i sh i k i pau", {551, 259, 132, 404, 111, 418});
+  test_read_phonemes_func("pau t a s u u k e ts u pau", {546, 182, 222, 135, 292, 108, 331, 125, 447});
+  test_read_phonemes_func("pau i sh i k i pau", {550, 258, 131, 403, 110, 417});
 }
 
 void test_to_phonemes_func(std::string input, std::vector<std::string> expected) {
@@ -76,6 +76,6 @@ void test_to_phonemes_func(std::string input, std::vector<std::string> expected)
 
 TEST(Test_PhonemeTransitionTokenizer, test_to_phonemes) {
   test_to_phonemes_func("d o w a N g o", {"pau", "d", "o", "w", "a", "N", "g", "o", "pau"});
-  test_to_phonemes_func("pau t a s u u k e ts u pau", {"pau", "t", "a", "s", "u", "k", "e", "ts", "u", "pau"});
+  test_to_phonemes_func("pau t a s u u k e ts u pau", {"pau", "t", "a", "s", "u", "k", "e", "ts", "U", "pau"});
   test_to_phonemes_func("i sh i k i pau", {"pau", "i", "sh", "I", "k", "I", "pau"});
 }

@@ -3,9 +3,8 @@
 #include <tuple>
 #include <vector>
 
-int viterbi_init(int const len_timeframes, float const* logprobs_output_by_onnxnetwork,
-                 std::vector<int> const& phonemes_index, int const num_transition_vocab, int const blank_id,
-                 std::vector<float>& log_emission_probs);
+int viterbi_init(float const* logprobs_transitions, float const* logprobs_blank, std::vector<int> const& token_ids,
+                 int const len_timeframes, int const num_transition_vocab, std::vector<float>& log_emission_probs);
 
 std::vector<float> viterbi_forward(int const len_timeframes, int const num_tokens_with_blank,
                                    std::vector<float> const& log_emission_probs, std::vector<bool>& is_transition,

@@ -7,29 +7,26 @@
 #include <vector>
 
 /**
- * @brief log_emission_probs を生成する関数
+ * @brief
  *
- * @param len_timeframes
- * @param num_tokens_with_blank
- * @param logprobs_output_by_onnxnetwork
+ * @param logprobs_transitions
+ * @param logprobs_blank
  * @param phonemes_index
+ * @param len_timeframes
  * @param num_transition_vocab
- * @param blank_id
  * @param log_emission_probs
  * @return int
  */
-int viterbi_init(int const len_timeframes, float const* logprobs_output_by_onnxnetwork,
-                 std::vector<int> const& phonemes_index, int const num_transition_vocab, int const blank_id,
-                 std::vector<float>& log_emission_probs) {
-  int const num_tokens_with_blank = phonemes_index.size() * 2 + 1;
+int viterbi_init(float const* logprobs_transitions, float const* logprobs_blank, std::vector<int> const& token_ids,
+                 int const len_timeframes, int const num_transition_vocab, std::vector<float>& log_emission_probs) {
+  int const num_tokens_with_blank = token_ids.size() * 2 + 1;
   for (std::size_t t = 0; t < len_timeframes; ++t) {
     for (std::size_t i = 0; i < num_tokens_with_blank; ++i) {
       if (i % 2 == 0) {
-        log_emission_probs[t * num_tokens_with_blank + i] =
-            logprobs_output_by_onnxnetwork[t * num_transition_vocab + blank_id];
+        log_emission_probs[t * num_tokens_with_blank + i] = logprobs_blank[t];
       } else {
         log_emission_probs[t * num_tokens_with_blank + i] =
-            logprobs_output_by_onnxnetwork[t * num_transition_vocab + phonemes_index[(i - 1) / 2]];
+            logprobs_transitions[t * num_transition_vocab + token_ids[(i - 1) / 2]];
       }
     }
   }
@@ -142,6 +139,7 @@ int viterbi_backtrace(int const len_timeframes, int const num_tokens_without_bla
   return 0;
 }
 
+#if 0
 int solve_viterbi(int const len_time_frame,
                   int const num_transition_vocab,  // num_vocab
                   int const blank_id,
@@ -160,3 +158,4 @@ int solve_viterbi(int const len_time_frame,
                     transition_timeframes);
   return 0;
 }
+#endif
