@@ -15,7 +15,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(googletest)
 
-# 依存ライブラリを追加
+#依存ライブラリを追加
 if (WIN32)
     FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-win-x64-1.16.3.zip)
 elseif(APPLE)
@@ -28,9 +28,11 @@ FetchContent_MakeAvailable(onnxruntime)
 include_directories(../eigen ${FETCHCONTENT_BASE_DIR}/onnxruntime-src/include)
 link_directories(${FETCHCONTENT_BASE_DIR}/onnxruntime-src/lib)
 
-# テスト時のみ
+#テスト時のみ
 find_package(HDF5 REQUIRED COMPONENTS C CXX)
 
+file(COPY ../src/phoneme_transitions.txt DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ../onnx_model/phoneme_trantision_model_2.onnx DESTINATION ${CMAKE_BINARY_DIR})
 
 enable_testing()
 
@@ -67,7 +69,7 @@ target_link_libraries(
   ${HDF5_CXX_LIBRARIES}
 )
 
-# テスト時のみ
+#テスト時のみ
 find_package(HDF5 REQUIRED COMPONENTS C CXX)
 message(STATUS "HDF5_INCLUDE_DIRS= ${HDF5_INCLUDE_DIRS}")
 target_include_directories(test_onnxruntime PRIVATE ${HDF5_INCLUDE_DIRS})
@@ -77,4 +79,3 @@ include(GoogleTest)
 gtest_discover_tests(test_tokenizer)
 gtest_discover_tests(test_onnxruntime)
 gtest_discover_tests(test_viterbi)
-

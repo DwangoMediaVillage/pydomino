@@ -8,7 +8,6 @@
 #include "../src/phoneme_transition.hpp"
 
 TEST(Test_PhonemeTransitionTokenizer, test_insert_pause_both_ends_if_not_exists) {
-  std::filesystem::current_path("../../");
   PhonemeTransitionTokenizer tokenizer = PhonemeTransitionTokenizer();
   std::vector<std::string> input_not_both_edge = {"d", "o", "w", "a", "N", "g", "o"};
   std::vector<std::string> expected_output = {"pau", "d", "o", "w", "a", "N", "g", "o", "pau"};

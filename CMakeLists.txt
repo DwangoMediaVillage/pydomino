@@ -32,6 +32,7 @@ FetchContent_MakeAvailable(onnxruntime)
 add_subdirectory(pybind11)
 include_directories(./eigen ./argparse/include ${FETCHCONTENT_BASE_DIR}/onnxruntime-src/include)
 link_directories(${FETCHCONTENT_BASE_DIR}/onnxruntime-src/lib)
+file(COPY src/phoneme_transitions.txt DESTINATION ${CMAKE_BINARY_DIR})
 
 pybind11_add_module(
     pydomino

@@ -20,9 +20,9 @@
  *
  */
 PhonemeTransitionTokenizer::PhonemeTransitionTokenizer() {
-  std::ifstream tokenlist_file("src/phoneme_transitions.txt");
+  std::ifstream tokenlist_file("phoneme_transitions.txt");
   if (!tokenlist_file) {
-    throw std::runtime_error("src/phoneme_transitions.txt cannot be opened.");
+    throw std::runtime_error("phoneme_transitions.txt cannot be opened.");
   }
 
   std::string line;
