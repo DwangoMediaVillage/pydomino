@@ -37,6 +37,7 @@ pybind11_add_module(
     pydomino
     src/lib.cpp
     src/domino.cpp
+    src/phoneme_transition.cpp
     src/viterbi.cpp
 )
 target_link_libraries(
@@ -49,6 +50,7 @@ add_executable(
     src/main.cpp
     src/domino.cpp
     src/viterbi.cpp
+    src/phoneme_transition.cpp
     src/load_wav.cpp
 )
 target_link_libraries(
