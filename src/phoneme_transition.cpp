@@ -20,14 +20,13 @@
  *
  */
 PhonemeTransitionTokenizer::PhonemeTransitionTokenizer() {
-  std::ifstream tokenlist_file("phoneme_transitions.txt");
-  if (!tokenlist_file) {
-    throw std::runtime_error("phoneme_transitions.txt cannot be opened.");
-  }
+  std::stringstream text(
+#include "phoneme_transitions.txt"
+  );
 
   std::string line;
   id_to_token_map.reserve(556);  // 音素遷移の総数
-  while (std::getline(tokenlist_file, line)) {
+  while (std::getline(text, line)) {
     std::vector<std::string> phonemes;
     std::stringstream ss(line);
     std::string phoneme;
@@ -38,7 +37,6 @@ PhonemeTransitionTokenizer::PhonemeTransitionTokenizer() {
 
     id_to_token_map.push_back(transition);
   }
-  tokenlist_file.close();
 }
 
 /**

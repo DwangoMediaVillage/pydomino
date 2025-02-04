@@ -1,4 +1,4 @@
-ry a
+R"(ry a
 ry i
 ry u
 ry e
@@ -553,4 +553,4 @@ pau u
 pau e
 pau o
 pau N
-pau cl
+pau cl)"
