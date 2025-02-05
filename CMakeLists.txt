@@ -15,24 +15,15 @@ if(MSVC)
     set(CMAKE_CXX_FLAGS_RELEASE  "${CMAKE_CXX_FLAGS_RELEASE} /MT")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 else(MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -lpthread")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 endif(MSVC)
 
 # 依存ライブラリを追加
-include(FetchContent)
-if (WIN32)
-    FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-win-x64-1.16.3.zip)
-elseif(APPLE)
-    FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-osx-universal2-1.16.3.tgz)
-else()
-    FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-linux-x64-1.16.3.tgz)
-endif()
-FetchContent_MakeAvailable(onnxruntime)
+find_package(onnxruntime REQUIRED)
 
 add_subdirectory(pybind11)
 include_directories(./eigen ./argparse/include ${FETCHCONTENT_BASE_DIR}/onnxruntime-src/include)
 link_directories(${FETCHCONTENT_BASE_DIR}/onnxruntime-src/lib)
-file(COPY src/phoneme_transitions.txt DESTINATION ${CMAKE_BINARY_DIR})
 
 pybind11_add_module(
     pydomino
@@ -43,7 +34,7 @@ pybind11_add_module(
 )
 target_link_libraries(
     pydomino
-    PRIVATE onnxruntime
+    PUBLIC onnxruntime
 )
 
 add_executable(
@@ -56,7 +47,7 @@ add_executable(
 )
 target_link_libraries(
     domino
-    PRIVATE onnxruntime
+    PUBLIC onnxruntime
 )
 
 if(WIN32)

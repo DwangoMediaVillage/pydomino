@@ -21,18 +21,20 @@ if (WIN32)
 elseif(APPLE)
     FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-osx-universal2-1.16.3.tgz)
 else()
-    FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-linux-x64-1.16.3.tgz)
+    if (CMAKE_SYSTEM_PROCESSOR MATCHES "AMD" OR CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
+      FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-linux-aarch64-1.16.3.tgz)
+    else()
+      FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-linux-x64-1.16.3.tgz)
+    endif()
 endif()
 FetchContent_MakeAvailable(onnxruntime)
 
-include_directories(../eigen ${FETCHCONTENT_BASE_DIR}/onnxruntime-src/include)
+include_directories(../eigen ../argparse/include ${FETCHCONTENT_BASE_DIR}/onnxruntime-src/include)
 link_directories(${FETCHCONTENT_BASE_DIR}/onnxruntime-src/lib)
+
 
 #テスト時のみ
 find_package(HDF5 REQUIRED COMPONENTS C CXX)
-
-file(COPY ../src/phoneme_transitions.txt DESTINATION ${CMAKE_BINARY_DIR})
-file(COPY ../onnx_model/phoneme_trantision_model_2.onnx DESTINATION ${CMAKE_BINARY_DIR})
 
 enable_testing()
 

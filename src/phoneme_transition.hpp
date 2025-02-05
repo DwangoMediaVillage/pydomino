@@ -27,7 +27,6 @@ class PhonemeTransitionTokenizer {
   void unvoice_i_and_u(std::vector<std::string> &input);
   std::vector<int> read_phonemes(std::istream &ss);
   std::vector<std::string> to_phonemes(std::vector<int> const &token_ids);
-  int const get_blank_id();
 
  private:
   std::vector<PhonemeTransition> id_to_token_map;
