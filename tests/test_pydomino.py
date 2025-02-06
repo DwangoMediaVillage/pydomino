@@ -29,6 +29,8 @@ def test_canrun_library():
 
 def test_canrun_cli():
     import subprocess
+    import os
+    import time
     from pathlib import Path
 
     data = [
@@ -42,7 +44,19 @@ def test_canrun_cli():
 
     for wavfile, phonemes in data:
         cli_labfile: Path = cli_output_dir / (wavfile.stem + ".lab")
-        status = subprocess.run(
+        if os.name == "nt":
+            status = subprocess.run(
+                [
+                    "domino.exe",
+                    f"--input_path=\"{str(wavfile)}\"",
+                    f"--input_phoneme=\"{' '.join(phonemes)}\"",
+                    f"--output_path=\"{str(cli_labfile)}\"",
+                    f"--min_frame=3",
+                ]
+            )
+            time.sleep(1.0)
+        else:
+            status = subprocess.run(
             [
                 "domino",
                 f"--input_path={str(wavfile)}",
@@ -50,6 +64,6 @@ def test_canrun_cli():
                 f"--output_path={str(cli_labfile)}",
                 f"--min_frame=3",
             ]
-        )
-        assert status.returncode == 0
+            )
+        assert status.returncode == 0, f"{status.stderr.decode()}"
         assert cli_labfile.read_text() == (expected_output_dir / cli_labfile.name).read_text()
