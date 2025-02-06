@@ -7,3 +7,6 @@ requires-python = ">= 3.8"
 [build-system]
 requires = ["setuptools", "wheel", "numpy"]
 build-backend = "setuptools.build_meta"
+
+[project.scripts]
+domino = "pydomino.__main__:main"

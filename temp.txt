@@ -1,0 +1,4 @@
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Users/shun_ueda/Desktop/pydomino/build/lib.macosx-11.1-arm64-cpython-312/pydomino/
+-DPYTHON_EXECUTABLE=/Users/shun_ueda/miniconda3/bin/python
+-DCMAKE_BUILD_TYPE=Release
+-DEXAMPLE_VERSION_INFO=1.1.0
