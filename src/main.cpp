@@ -40,7 +40,7 @@ void write_lab_file(std::vector<std::tuple<double, double, std::string>> const &
                     std::filesystem::path const &lab_file) {
   std::cout << "write_lab_file start: \"" << lab_file << "\"" << std::endl;
   std::ofstream lab_ofs(lab_file);
-  lab_ofs << std::fixed << std::setprecision(2);
+  lab_ofs << std::fixed << std::setprecision(3);
   for (auto const [begin_sec, end_sec, phoneme] : labels) {
     lab_ofs << begin_sec << "\t" << end_sec << "\t" << phoneme << std::endl;
   }
@@ -53,7 +53,11 @@ int main(int argc, char *argv[]) {
   program.add_argument("--input_path").required().nargs(1).help("wavファイルパス");
   program.add_argument("--output_path").nargs(1).help("labファイルパス");
   program.add_argument("--input_phoneme").nargs(1).help("入力音素列");
-  program.add_argument("-N").nargs(1).help("1音素が割り当てられる最低フレーム数").default_value(5).scan<'i', int>();
+  program.add_argument("--min_frame")
+      .nargs(1)
+      .help("1音素が割り当てられる最低フレーム数")
+      .default_value(5)
+      .scan<'i', int>();
 
   try {
     ElapsedTimer const total_timer("total");
@@ -63,7 +67,7 @@ int main(int argc, char *argv[]) {
     {
       domino::Aligner aligner("onnx_model/phoneme_trantision_model_2.onnx");
 
-      int const N = program.get<int>("-N");
+      int const N = program.get<int>("--min_frame");
 
       {
         ElapsedTimer const total_timer("process");
