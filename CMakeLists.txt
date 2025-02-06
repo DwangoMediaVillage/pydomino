@@ -18,7 +18,7 @@ else(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -lpthread")
 endif(MSVC)
 
-# 依存ライブラリを追加
+#依存ライブラリを追加
 include(FetchContent)
 if (WIN32)
     FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-win-x64-1.16.3.zip)
@@ -31,20 +31,24 @@ FetchContent_MakeAvailable(onnxruntime)
 
 add_subdirectory(pybind11)
 include_directories(./eigen ./argparse/include ${FETCHCONTENT_BASE_DIR}/onnxruntime-src/include)
-link_directories(${FETCHCONTENT_BASE_DIR}/onnxruntime-src/lib)
-file(COPY src/phoneme_transitions.txt DESTINATION ${CMAKE_BINARY_DIR})
 
 pybind11_add_module(
-    pydomino
+    pydomino_cpp
     src/lib.cpp
     src/domino.cpp
     src/phoneme_transition.cpp
     src/viterbi.cpp
 )
+file(COPY ${FETCHCONTENT_BASE_DIR} DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 target_link_libraries(
-    pydomino
+    pydomino_cpp
     PRIVATE onnxruntime
 )
+set_target_properties(pydomino_cpp PROPERTIES
+    INSTALL_RPATH "@loader_path/_deps/onnxruntime-src/lib"
+    BUILD_WITH_INSTALL_RPATH TRUE
+)
+target_link_directories(pydomino_cpp PRIVATE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/_deps/onnxruntime-src/lib)
 
 add_executable(
     domino
@@ -58,6 +62,11 @@ target_link_libraries(
     domino
     PRIVATE onnxruntime
 )
+set_target_properties(domino PROPERTIES
+    INSTALL_RPATH "@loader_path/_deps/onnxruntime-src/lib"
+    BUILD_WITH_INSTALL_RPATH TRUE
+)
+target_link_directories(domino PRIVATE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/_deps/onnxruntime-src/lib)
 
 if(WIN32)
     add_custom_command(
