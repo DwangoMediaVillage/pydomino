@@ -78,12 +78,11 @@ z: list[tuple[float, float, str]] = alignmer.align(y, " ".join(p), 3) # [(start_
 ビルドされたツールは下記のようにして使えます：
 
 ```sh
-./build/{temporary-directory}/pydomino/domino \
+domino \
     --input_path={path-to-wav-file} \
     --input_phoneme={path-to-phoneme-file} \
     --output_path={path-to-output-lab-file} \
-    --model={path-to-model-file.onnx} \
-    -N=3
+    --min_frame==3
 ```
 
 ### label file format (.lab)
@@ -93,7 +92,7 @@ z: list[tuple[float, float, str]] = alignmer.align(y, " ".join(p), 3) # [(start_
 各行に音素の開始時刻と終了時刻 (いずれも単位は秒) と、そのときの音素が TAB 区切りで並んでいます：
 
 ```txt
-0.00    1.87    pau
-1.87    1.90    t
-1.90    3.10    pau
+0.000    1.870    pau
+1.870    1.900    t
+1.900    3.100    pau
 ```

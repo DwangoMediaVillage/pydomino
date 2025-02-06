@@ -4,7 +4,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from setuptools import Extension, setup
+from setuptools import Extension, setup, find_packages
 from setuptools.command.build_ext import build_ext
 
 # Convert distutils Windows platform specifiers to CMake -A arguments
@@ -95,22 +95,27 @@ class CMakeBuild(build_ext):
         build_temp = Path(self.build_temp) / ext.name
         if not build_temp.exists():
             build_temp.mkdir(parents=True)
+        with open("temp.txt", "wt") as fp:
+            for args in cmake_args:
+                fp.write(f"{args}\n")
 
         subprocess.run(["cmake", ext.sourcedir, *cmake_args], cwd=build_temp, check=True)
         subprocess.run(["cmake", "--build", ".", *build_args], cwd=build_temp, check=True)
+        subprocess.run(["cmake", "--install", "."], cwd=build_temp, check=True)
 
 
 # The information here can also be placed in setup.cfg - better separation of
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
-    name="pydomino",
-    version="1.0.1",
+    name="pydomino_cpp",
+    version="1.1.0",
     url="https://github.com/DwangoMediaVillage/pydomino",
     author="DWANGO Co., Ltd.",
     author_email="shun_ueda@dwango.co.jp",
     description="16kHz モノラル音声に対して指定した音素をアライメントするライブラリ",
     long_description="",
-    ext_modules=[CMakeExtension("pydomino")],
+    ext_modules=[CMakeExtension("pydomino.pydomino_cpp")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
+    packages=find_packages(),
 )
