@@ -36,7 +36,7 @@ def test_canrun_cli():
         (Path("tests/wavdata/ishIkI.wav"), ["i", "sh", "i", "k", "i"]),
         (Path("tests/wavdata/tasuuketsU.wav"), ["t", "a", "s", "u", "u", "k", "e", "ts", "u"]),
     ]
-    expected_output_dir: Path = Path("tests/results_lib")
+    expected_output_dir: Path = Path("tests/expected_results_lib")
     cli_output_dir: Path = Path("tests/results_cli")
     cli_output_dir.mkdir(exist_ok=True)
 
