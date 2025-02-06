@@ -82,7 +82,7 @@ domino \
     --input_path={path-to-wav-file} \
     --input_phoneme={path-to-phoneme-file} \
     --output_path={path-to-output-lab-file} \
-    -N=3
+    --min_frame==3
 ```
 
 ### label file format (.lab)
