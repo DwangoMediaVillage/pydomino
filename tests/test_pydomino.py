@@ -48,22 +48,23 @@ def test_canrun_cli():
             status = subprocess.run(
                 [
                     "domino.exe",
-                    f"--input_path=\"{str(wavfile)}\"",
+                    f'--input_path="{str(wavfile)}"',
                     f"--input_phoneme=\"{' '.join(phonemes)}\"",
-                    f"--output_path=\"{str(cli_labfile)}\"",
+                    f'--output_path="{str(cli_labfile)}"',
                     f"--min_frame=3",
                 ]
             )
+            # windowsで動かすと、subprocess.run の箇所の完了を待ってくれなかったため、sleepで擬似的に待機する
             time.sleep(1.0)
         else:
             status = subprocess.run(
-            [
-                "domino",
-                f"--input_path={str(wavfile)}",
-                f"--input_phoneme={' '.join(phonemes)}",
-                f"--output_path={str(cli_labfile)}",
-                f"--min_frame=3",
-            ]
+                [
+                    "domino",
+                    f"--input_path={str(wavfile)}",
+                    f"--input_phoneme={' '.join(phonemes)}",
+                    f"--output_path={str(cli_labfile)}",
+                    f"--min_frame=3",
+                ]
             )
         assert status.returncode == 0, f"{status.stderr.decode()}"
         assert cli_labfile.read_text() == (expected_output_dir / cli_labfile.name).read_text()
