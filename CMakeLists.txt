@@ -25,9 +25,14 @@ if (WIN32)
 elseif(APPLE)
     FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-osx-universal2-1.16.3.tgz)
 else()
-    FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-linux-x64-1.16.3.tgz)
+    if (CMAKE_SYSTEM_PROCESSOR MATCHES "AMD" OR CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
+        FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-linux-aarch64-1.16.3.tgz)
+    else()
+        FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-linux-x64-1.16.3.tgz)
+    endif()
 endif()
 FetchContent_MakeAvailable(onnxruntime)
+
 
 add_subdirectory(pybind11)
 include_directories(./eigen ./argparse/include ${FETCHCONTENT_BASE_DIR}/onnxruntime-src/include)
@@ -44,10 +49,17 @@ target_link_libraries(
     pydomino_cpp
     PRIVATE onnxruntime
 )
-set_target_properties(pydomino_cpp PROPERTIES
-    INSTALL_RPATH "@loader_path/_deps/onnxruntime-src/lib"
-    BUILD_WITH_INSTALL_RPATH TRUE
-)
+if(APPLE)
+    set_target_properties(pydomino_cpp PROPERTIES
+        INSTALL_RPATH "@loader_path/_deps/onnxruntime-src/lib"
+        BUILD_WITH_INSTALL_RPATH TRUE
+    )
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set_target_properties(pydomino_cpp PROPERTIES
+        INSTALL_RPATH "$ORIGIN/_deps/onnxruntime-src/lib/"
+        BUILD_WITH_INSTALL_RPATH TRUE
+    )
+endif()
 target_link_directories(pydomino_cpp PRIVATE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/_deps/onnxruntime-src/lib)
 
 add_executable(
@@ -62,10 +74,18 @@ target_link_libraries(
     domino
     PUBLIC onnxruntime
 )
-set_target_properties(domino PROPERTIES
-    INSTALL_RPATH "@loader_path/_deps/onnxruntime-src/lib"
-    BUILD_WITH_INSTALL_RPATH TRUE
-)
+if(APPLE)
+    set_target_properties(domino PROPERTIES
+        INSTALL_RPATH "@loader_path/_deps/onnxruntime-src/lib"
+        BUILD_WITH_INSTALL_RPATH TRUE
+    )
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set_target_properties(domino PROPERTIES
+        INSTALL_RPATH "$ORIGIN/_deps/onnxruntime-src/lib/"
+        BUILD_WITH_INSTALL_RPATH TRUE
+    )
+endif()
+    
 target_link_directories(domino PRIVATE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/_deps/onnxruntime-src/lib)
 
 if(WIN32)
@@ -78,6 +98,7 @@ endif()
 install(TARGETS domino
     RUNTIME DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 )
+
 
 if(WIN32)
     add_custom_command(
