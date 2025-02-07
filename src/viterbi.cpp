@@ -30,6 +30,7 @@ int viterbi_init(float const* logprobs_transitions, float const* logprobs_blank,
       }
     }
   }
+  return 0;
 }
 
 /**

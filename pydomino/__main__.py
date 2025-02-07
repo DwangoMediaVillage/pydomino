@@ -4,7 +4,10 @@ import sys
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    binary_path = os.path.join(script_dir, "domino")
+    if os.name == "nt":
+        binary_path = os.path.join(script_dir, "domino.exe")
+    else:
+        binary_path = os.path.join(script_dir, "domino")
 
     if not os.path.exists(binary_path):
         print(f"Error: {binary_path} not found")
