@@ -8,5 +8,19 @@
 
 ```bash
 pip install -U sphinx
+cd sphinx
 sphinx-quickstart
+```
+
+## テーマの変更
+
+
+```bash
+pip install sphinx_rtd_theme
+```
+
+で、`conf.py` の以下をこう変更
+
+```python
+html_theme = 'sphinx_rtd_theme'
 ```
