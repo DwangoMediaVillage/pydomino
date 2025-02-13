@@ -13,12 +13,20 @@ author = "shun ueda"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
-
 templates_path = ["_templates"]
 exclude_patterns = []
 
 language = "ja"
+
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath("../source/py_src"))
+# 必要な拡張機能を読み込む
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
+]
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
