@@ -13,7 +13,7 @@ def test_canrun_library():
         (Path("tests/wavdata/ishIkI.wav"), ["i", "sh", "i", "k", "i"]),
         (Path("tests/wavdata/tasuuketsU.wav"), ["t", "a", "s", "u", "u", "k", "e", "ts", "u"]),
     ]
-    aligner = pydomino.Aligner("onnx_model/phoneme_trantision_model_2.onnx")
+    aligner = pydomino.Aligner("onnx_model/phoneme_trantision_model_3.onnx")
 
     output_dir: Path = Path("tests/results_lib")
     output_dir.mkdir(exist_ok=True)

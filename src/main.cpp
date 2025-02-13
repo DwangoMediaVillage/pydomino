@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
     program.parse_args(argc, argv);
 
     {
-      domino::Aligner aligner("onnx_model/phoneme_trantision_model_2.onnx");
+      domino::Aligner aligner("onnx_model/phoneme_trantision_model_3.onnx");
 
       int const N = program.get<int>("--min_frame");
 
