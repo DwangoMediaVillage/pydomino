@@ -99,7 +99,6 @@ install(TARGETS domino
     RUNTIME DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 )
 
-
 if(WIN32)
     add_custom_command(
         TARGET pydomino_cpp POST_BUILD
