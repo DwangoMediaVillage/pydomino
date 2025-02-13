@@ -53,6 +53,7 @@ int main(int argc, char *argv[]) {
   program.add_argument("--input_path").required().nargs(1).help("wavファイルパス");
   program.add_argument("--output_path").nargs(1).help("labファイルパス");
   program.add_argument("--input_phoneme").nargs(1).help("入力音素列");
+  program.add_argument("--onnx_path").required().nargs(1).help("onnxファイルパス");
   program.add_argument("--min_frame")
       .nargs(1)
       .help("1音素が割り当てられる最低フレーム数")
@@ -65,7 +66,7 @@ int main(int argc, char *argv[]) {
     program.parse_args(argc, argv);
 
     {
-      domino::Aligner aligner("onnx_model/phoneme_trantision_model_3.onnx");
+      domino::Aligner aligner(program.present<std::string>("--onnx_path").value());
 
       int const N = program.get<int>("--min_frame");
 

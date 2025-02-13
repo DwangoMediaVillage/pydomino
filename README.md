@@ -82,8 +82,11 @@ domino \
     --input_path={path-to-wav-file} \
     --input_phoneme={path-to-phoneme-file} \
     --output_path={path-to-output-lab-file} \
+    --onnx_path={path-to-output-onnx-file} \
     --min_frame==3
 ```
+
+onnxファイルは当組織で学習済みの `onnx_model/phoneme_trantision_model_3.onnx` を用意していますのでお使いください
 
 ### label file format (.lab)
 

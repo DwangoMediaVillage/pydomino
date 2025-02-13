@@ -63,6 +63,7 @@ def test_canrun_cli():
                     f"--input_path={str(wavfile)}",
                     f"--input_phoneme={' '.join(phonemes)}",
                     f"--output_path={str(cli_labfile)}",
+                    f"--onnx_path=onnx_model/phoneme_trantision_model_2.onnx",
                     f"--min_frame=3",
                 ]
             )
