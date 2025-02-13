@@ -21,10 +21,10 @@ class Aligner(Aligner_cpp):
 
         Args:
             waveform_mono_16kHz (np.ndarray): 16kHzのモノラル音声信号
-            phonemes (str):
-            min_aligned_timeframe (int): _description_
+            phonemes (str): 半角スペース区切りの音素列
+            min_aligned_timeframe (int): 両端にある `pau` 音素以外のすべての音素に割り当てられる最低時間フレーム。1フレーム10ミリ秒なので、N=3ですべての音素が30ミリ秒以上割り当てられる
 
         Returns:
-            _type_: _description_
+            list[tuple[float, float, str]]: アラインメント結果。`(開始秒数, 終了秒数, 音素)` のタプル列
         """
         return super().align(waveform_mono_16kHz, phonemes, min_aligned_timeframe)
