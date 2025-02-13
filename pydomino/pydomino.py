@@ -28,3 +28,7 @@ class Aligner(Aligner_cpp):
             list[tuple[float, float, str]]: アラインメント結果。`(開始秒数, 終了秒数, 音素)` のタプル列
         """
         return super().align(waveform_mono_16kHz, phonemes, min_aligned_timeframe)
+
+    def release(self):
+        """内部で読み込んだ ONNX ファイルのメモリを開放する関数。デストラクタでこの関数を呼び出す。"""
+        super().release()
