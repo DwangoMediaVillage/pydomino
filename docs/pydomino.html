@@ -18,10 +18,12 @@
         <script src="_static/documentation_options.js?v=c033477b"></script>
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="_static/translations.js?v=4dbe4bdc"></script>
+        <script src="_static/translations.js?v=91613774"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="索引" href="genindex.html" />
-    <link rel="search" title="検索" href="search.html" /> 
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="pydominoの使用例" href="examples.html" />
+    <link rel="prev" title="日本語音素アラインメントツール pydomino" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,8 +46,16 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="aligner.html">pydomino.Aliger クラス</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">pydomino module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pydomino.Aligner"><code class="docutils literal notranslate"><span class="pre">Aligner</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pydomino.Aligner.align"><code class="docutils literal notranslate"><span class="pre">Aligner.align()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydomino.Aligner.release"><code class="docutils literal notranslate"><span class="pre">Aligner.release()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">pydominoの使用例</a></li>
 </ul>
 
         </div>
@@ -76,34 +86,33 @@
 <span id="pydomino-module"></span><h1>pydomino module<a class="headerlink" href="#module-pydomino" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydomino.Aligner">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydomino.</span></span><span class="sig-name descname"><span class="pre">Aligner</span></span><a class="headerlink" href="#pydomino.Aligner" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydomino.</span></span><span class="sig-name descname"><span class="pre">Aligner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onnxfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydomino.Aligner" title="Link to this definition"></a></dt>
 <dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>アラインメントクラス</p>
-<dl class="field-list simple">
-<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>onnx_path</strong> (<em>str</em>) -- onnxモデルのファイルパス</p>
-</dd>
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydomino.Aligner.align">
-<span class="sig-name descname"><span class="pre">align</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wav_source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phonemes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydomino.Aligner.align" title="Link to this definition"></a></dt>
-<dd><p>入力された16kHzモノラル音声信号をアラインメントする</p>
+<span class="sig-name descname"><span class="pre">align</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waveform_mono_16kHz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phonemes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_aligned_timeframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydomino.Aligner.align" title="Link to this definition"></a></dt>
+<dd><p>音素遷移予測に基づく日本語音素アラインメントを実行する関数</p>
 <dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>wav_source</strong> (<em>numpy.ndarray</em>) -- 16kHz モノラル音声信号</p></li>
+<li><p><strong>waveform_mono_16kHz</strong> (<em>np.ndarray</em>) -- 16kHzのモノラル音声信号</p></li>
 <li><p><strong>phonemes</strong> (<em>str</em>) -- 半角スペース区切りの音素列</p></li>
-<li><p><strong>N</strong> (<em>int</em>) -- pauを含めたすべての音素に割り当てられる最低時間フレーム。
-1フレーム10ミリ秒なので、N=3ですべての音素が30ミリ秒以上割り当てられる</p></li>
+<li><p><strong>min_aligned_timeframe</strong> (<em>int</em>) -- 両端にある <cite>pau</cite> 音素以外のすべての音素に割り当てられる最低時間フレーム。1フレーム10ミリ秒なので、N=3ですべての音素が30ミリ秒以上割り当てられる</p></li>
 </ul>
 </dd>
 <dt class="field-even">戻り値<span class="colon">:</span></dt>
-<dd class="field-even"><p>アラインメント結果</p>
+<dd class="field-even"><p>アラインメント結果。<cite>(開始秒数, 終了秒数, 音素)</cite> のタプル列</p>
 </dd>
 <dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list[tuple[float, float, str]]</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydomino.Aligner.release">
+<span class="sig-name descname"><span class="pre">release</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydomino.Aligner.release" title="Link to this definition"></a></dt>
+<dd><p>内部で読み込んだ ONNX ファイルのメモリを開放する関数。デストラクタでこの関数を呼び出す。</p>
 </dd></dl>
 
 </dd></dl>
@@ -113,12 +122,15 @@
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="日本語音素アラインメントツール pydomino" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="pydominoの使用例" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, DWANGO Co.,Ltd..</p>
+    <p>&#169; Copyright 2025, shun ueda.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
