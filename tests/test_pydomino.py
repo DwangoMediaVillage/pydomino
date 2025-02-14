@@ -1,10 +1,11 @@
 """ pydominoのライブラリをpip install してちゃんと動くかどうか
 """
 
+import shutil
+from pathlib import Path
+
 
 def test_canrun_library():
-    from pathlib import Path
-
     import librosa
     import pydomino
 
@@ -26,12 +27,13 @@ def test_canrun_library():
             for x in result:
                 fp.write(f"{x[0]:.3f}\t{x[1]:.3f}\t{x[2]}\n")
 
+    shutil.rmtree(output_dir)
+
 
 def test_canrun_cli():
     import subprocess
     import os
     import time
-    from pathlib import Path
 
     data = [
         (Path("tests/wavdata/dowaNgo.wav"), ["d", "o", "w", "a", "N", "g", "o"]),
@@ -63,9 +65,11 @@ def test_canrun_cli():
                     f"--input_path={str(wavfile)}",
                     f"--input_phoneme={' '.join(phonemes)}",
                     f"--output_path={str(cli_labfile)}",
-                    f"--onnx_path=onnx_model/phoneme_trantision_model_2.onnx",
+                    f"--onnx_path=onnx_model/phoneme_trantision_model_3.onnx",
                     f"--min_frame=3",
                 ]
             )
         assert status.returncode == 0, f"{status.stderr.decode()}"
         assert cli_labfile.read_text() == (expected_output_dir / cli_labfile.name).read_text()
+
+    shutil.rmtree(cli_output_dir)
