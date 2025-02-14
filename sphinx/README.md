@@ -41,7 +41,7 @@ html_theme = 'sphinx_rtd_theme'
 ```
 cd sphinx
 rm -r ../docs/*
-cp -r -a ./build/html ../docs
+cp -a ./build/html/* ../docs
 ```
 
 なんか隠しファイルは `rm -r` で消せないっぽい？

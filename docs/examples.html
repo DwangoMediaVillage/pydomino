@@ -131,22 +131,22 @@
 <h2>コマンドラインツールの場合<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <p>ライブラリのインストールによって、仮想環境にコマンドラインツールもビルドされます。これによってアラインメントの実行も可能です</p>
 <p>たとえば</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>domino<span class="w"> </span>--input_path<span class="w"> </span>example/dowaNgo.wav<span class="w"> </span>--input_phoneme<span class="w"> </span><span class="s2">&quot;pau d o w a N g o pau&quot;</span><span class="w"> </span>--output_path<span class="w"> </span>result.lab<span class="w"> </span>-N<span class="w"> </span><span class="m">5</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>domino<span class="w"> </span>--input_path<span class="w"> </span>example/dowaNgo.wav<span class="w"> </span>--input_phoneme<span class="w"> </span><span class="s2">&quot;pau d o w a N g o pau&quot;</span><span class="w"> </span>--output_path<span class="w"> </span>result.lab<span class="w"> </span>--onnx_path<span class="o">=</span>onnx_model/phoneme_trantision_model_3.onnx<span class="w"> </span>--min_frame<span class="o">=</span><span class="m">3</span>
 </pre></div>
 </div>
 <p>とすると、以下のアラインメント結果が labファイル（result.lab）に出力されます</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>cat<span class="w"> </span>result.lab
 </pre></div>
 </div>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="mf">0.00</span><span class="w">        </span><span class="mf">0.08</span><span class="w">    </span><span class="n">pau</span>
-<span class="mf">0.08</span><span class="w">        </span><span class="mf">0.13</span><span class="w">    </span><span class="n">d</span>
-<span class="mf">0.13</span><span class="w">        </span><span class="mf">0.20</span><span class="w">    </span><span class="n">o</span>
-<span class="mf">0.20</span><span class="w">        </span><span class="mf">0.26</span><span class="w">    </span><span class="n">w</span>
-<span class="mf">0.26</span><span class="w">        </span><span class="mf">0.34</span><span class="w">    </span><span class="n">a</span>
-<span class="mf">0.34</span><span class="w">        </span><span class="mf">0.44</span><span class="w">    </span><span class="n">N</span>
-<span class="mf">0.44</span><span class="w">        </span><span class="mf">0.49</span><span class="w">    </span><span class="n">g</span>
-<span class="mf">0.49</span><span class="w">        </span><span class="mf">0.68</span><span class="w">    </span><span class="n">o</span>
-<span class="mf">0.68</span><span class="w">        </span><span class="mf">0.73</span><span class="w">    </span><span class="n">pau</span>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="mf">0.000</span><span class="w">       </span><span class="mf">0.110</span><span class="w">   </span><span class="n">pau</span>
+<span class="mf">0.110</span><span class="w">       </span><span class="mf">0.140</span><span class="w">   </span><span class="n">d</span>
+<span class="mf">0.140</span><span class="w">       </span><span class="mf">0.170</span><span class="w">   </span><span class="n">o</span>
+<span class="mf">0.170</span><span class="w">       </span><span class="mf">0.210</span><span class="w">   </span><span class="n">w</span>
+<span class="mf">0.210</span><span class="w">       </span><span class="mf">0.360</span><span class="w">   </span><span class="n">a</span>
+<span class="mf">0.360</span><span class="w">       </span><span class="mf">0.450</span><span class="w">   </span><span class="n">N</span>
+<span class="mf">0.450</span><span class="w">       </span><span class="mf">0.490</span><span class="w">   </span><span class="n">g</span>
+<span class="mf">0.490</span><span class="w">       </span><span class="mf">0.620</span><span class="w">   </span><span class="n">o</span>
+<span class="mf">0.620</span><span class="w">       </span><span class="mf">0.755</span><span class="w">   </span><span class="n">pau</span>
 </pre></div>
 </div>
 </section>
