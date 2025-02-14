@@ -68,7 +68,7 @@ pythonライブラリの場合
 
 .. code-block:: bash
 
-    $ domino --input_path example/dowaNgo.wav --input_phoneme "pau d o w a N g o pau" --output_path result.lab -N 5
+    domino --input_path example/dowaNgo.wav --input_phoneme "pau d o w a N g o pau" --output_path result.lab --onnx_path=onnx_model/phoneme_trantision_model_3.onnx --min_frame=3
 
 とすると、以下のアラインメント結果が labファイル（result.lab）に出力されます 
 
@@ -78,12 +78,13 @@ pythonライブラリの場合
 
 .. code-block:: guess
 
-    0.00	0.08	pau
-    0.08	0.13	d
-    0.13	0.20	o
-    0.20	0.26	w
-    0.26	0.34	a
-    0.34	0.44	N
-    0.44	0.49	g
-    0.49	0.68	o
-    0.68	0.73	pau
+    0.000	0.110	pau
+    0.110	0.140	d
+    0.140	0.170	o
+    0.170	0.210	w
+    0.210	0.360	a
+    0.360	0.450	N
+    0.450	0.490	g
+    0.490	0.620	o
+    0.620	0.755	pau
+
