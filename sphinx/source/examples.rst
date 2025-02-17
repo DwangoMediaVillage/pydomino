@@ -68,7 +68,7 @@ pythonライブラリの場合
 
 .. code-block:: bash
 
-    domino --input_path example/dowaNgo.wav --input_phoneme "pau d o w a N g o pau" --output_path result.lab --onnx_path=onnx_model/phoneme_trantision_model.onnx--min_frame=3
+    domino --input_path example/dowaNgo.wav --input_phoneme "pau d o w a N g o pau" --output_path result.lab --onnx_path=onnx_model/phoneme_trantision_model.onnx --min_frame=3
 
 とすると、以下のアラインメント結果が labファイル（result.lab）に出力されます 
 

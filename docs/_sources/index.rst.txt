@@ -64,6 +64,7 @@ Anaconda Prompt (miniconda3) 環境において MSVC の vcvars64.bat を利用�
 
    pydomino
    examples
+   how_to_make_onnxfile
 
 
 

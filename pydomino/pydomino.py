@@ -20,7 +20,7 @@ class Aligner(Aligner_cpp):
         """音素遷移予測に基づく日本語音素アラインメントを実行する関数
 
         Args:
-            waveform_mono_16kHz (np.ndarray): 16kHzのモノラル音声信号
+            waveform_mono_16kHz (np.ndarray): 16kHzのモノラル音声信号。サンプリング値は (-1, 1) に正規化された32bit浮動小数点
             phonemes (str): 半角スペース区切りの音素列
             min_aligned_timeframe (int): 両端にある `pau` 音素以外のすべての音素に割り当てられる最低時間フレーム。1フレーム10ミリ秒なので、N=3ですべての音素が30ミリ秒以上割り当てられる
 

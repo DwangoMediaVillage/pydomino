@@ -22,6 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="ONNXファイルを自分で作るには" href="how_to_make_onnxfile.html" />
     <link rel="prev" title="pydomino module" href="pydomino.html" /> 
 </head>
 
@@ -52,6 +53,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#id1">コマンドラインツールの場合</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_make_onnxfile.html">ONNXファイルを自分で作るには</a></li>
 </ul>
 
         </div>
@@ -86,7 +88,7 @@
 <span class="kn">import</span> <span class="nn">librosa</span>
 <span class="kn">import</span> <span class="nn">pydomino</span>
 
-<span class="n">alignmer</span><span class="p">:</span> <span class="n">pydomino</span><span class="o">.</span><span class="n">Aligner</span> <span class="o">=</span> <span class="n">pydomino</span><span class="o">.</span><span class="n">Aligner</span><span class="p">(</span><span class="s2">&quot;onnx_model/model.onnx&quot;</span><span class="p">)</span>
+<span class="n">alignmer</span><span class="p">:</span> <span class="n">pydomino</span><span class="o">.</span><span class="n">Aligner</span> <span class="o">=</span> <span class="n">pydomino</span><span class="o">.</span><span class="n">Aligner</span><span class="p">(</span><span class="s2">&quot;onnx_model/phoneme_trantision_model.onnx&quot;</span><span class="p">)</span>
 <span class="n">wav_source</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;example/dowaNgo.wav&quot;</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="mi">16_000</span><span class="p">,</span> <span class="n">mono</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">phonemes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;pau&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;pau&quot;</span><span class="p">]</span>
 <span class="n">alignment_result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">alignmer</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">wav_source</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">phonemes</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
@@ -131,7 +133,7 @@
 <h2>コマンドラインツールの場合<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <p>ライブラリのインストールによって、仮想環境にコマンドラインツールもビルドされます。これによってアラインメントの実行も可能です</p>
 <p>たとえば</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>domino<span class="w"> </span>--input_path<span class="w"> </span>example/dowaNgo.wav<span class="w"> </span>--input_phoneme<span class="w"> </span><span class="s2">&quot;pau d o w a N g o pau&quot;</span><span class="w"> </span>--output_path<span class="w"> </span>result.lab<span class="w"> </span>--onnx_path<span class="o">=</span>onnx_model/phoneme_trantision_model_3.onnx<span class="w"> </span>--min_frame<span class="o">=</span><span class="m">3</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>domino<span class="w"> </span>--input_path<span class="w"> </span>example/dowaNgo.wav<span class="w"> </span>--input_phoneme<span class="w"> </span><span class="s2">&quot;pau d o w a N g o pau&quot;</span><span class="w"> </span>--output_path<span class="w"> </span>result.lab<span class="w"> </span>--onnx_path<span class="o">=</span>onnx_model/phoneme_trantision_model.onnx<span class="w"> </span>--min_frame<span class="o">=</span><span class="m">3</span>
 </pre></div>
 </div>
 <p>とすると、以下のアラインメント結果が labファイル（result.lab）に出力されます</p>
@@ -157,6 +159,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="pydomino.html" class="btn btn-neutral float-left" title="pydomino module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="how_to_make_onnxfile.html" class="btn btn-neutral float-right" title="ONNXファイルを自分で作るには" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
