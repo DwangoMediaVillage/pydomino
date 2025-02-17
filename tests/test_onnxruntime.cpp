@@ -30,7 +30,7 @@ class Network {
   Network()
       : env_(),
         session_options_(),
-        session_(env_, "onnx_model/phoneme_trantision_model_2.onnx", session_options_),
+        session_(env_, "onnx_model/onnx_model/phoneme_trantision_model.onnx", session_options_),
         memory_info_(Ort::MemoryInfo::CreateCpu(OrtDeviceAllocator, OrtMemTypeCPU)),
         run_options_() {
     ;

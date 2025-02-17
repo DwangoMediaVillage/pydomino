@@ -11,7 +11,7 @@ pythonライブラリの場合
     import librosa
     import pydomino
 
-    alignmer: pydomino.Aligner = pydomino.Aligner("onnx_model/model.onnx")
+    alignmer: pydomino.Aligner = pydomino.Aligner("onnx_model/phoneme_trantision_model.onnx")
     wav_source: np.ndarray = librosa.load("example/dowaNgo.wav", sr=16_000, mono=True, dtype=np.float32)[0]
     phonemes: list[str] = ["pau"] + ["d", "o", "w", "a", "N", "g", "o"] + ["pau"]
     alignment_result: list[tuple[float, float, str]] = alignmer.align(wav_source, " ".join(phonemes), 3)
@@ -68,7 +68,7 @@ pythonライブラリの場合
 
 .. code-block:: bash
 
-    domino --input_path example/dowaNgo.wav --input_phoneme "pau d o w a N g o pau" --output_path result.lab --onnx_path=onnx_model/phoneme_trantision_model_3.onnx --min_frame=3
+    domino --input_path example/dowaNgo.wav --input_phoneme "pau d o w a N g o pau" --output_path result.lab --onnx_path=onnx_model/phoneme_trantision_model.onnx--min_frame=3
 
 とすると、以下のアラインメント結果が labファイル（result.lab）に出力されます 
 

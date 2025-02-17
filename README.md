@@ -57,7 +57,7 @@ z: list[tuple[float, float, str]] = alignmer.align(y, " ".join(p), 3) # [(start_
 ```
 
 * `path-to-model-file.onnx` は事前学習済みの onnx モデルファイルです。
-  * `onnx_model/model.onnx`にあります。
+  * `onnx_model/phoneme_transition_model.onnx`にあります。
 * `path-to-wav-file` はサンプリング周波数 16kHz のモノラル wav ファイルです。
 * `path-to-phoneme-file` は音素を空白区切りしたテキストが格納されたファイルのパスです。
   * NOTE: 開始音素と終了音素は `pau` である必要があります。
@@ -86,7 +86,7 @@ domino \
     --min_frame==3
 ```
 
-onnxファイルは当組織で学習済みの `onnx_model/phoneme_trantision_model_3.onnx` を用意していますのでお使いください
+onnxファイルは当組織で学習済みの `onnx_model/phoneme_trantision_model.onnx` を用意していますのでお使いください
 
 ### label file format (.lab)
 
