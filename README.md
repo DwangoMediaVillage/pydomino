@@ -86,7 +86,7 @@ domino \
     --min_frame==3
 ```
 
-onnxファイルは当組織で学習済みの `onnx_model/phoneme_trantision_model.onnx` を用意していますのでお使いください
+onnxファイルは当組織で学習済みの `onnx_model/phoneme_transition_model.onnx` を用意していますのでお使いください
 
 ### label file format (.lab)
 
