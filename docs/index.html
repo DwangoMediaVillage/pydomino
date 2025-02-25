@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="ja" data-content_root="./">
 <head>
@@ -5,20 +7,16 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>日本語音素アラインメントツール pydomino &mdash; pydomino  ドキュメント</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=c033477b"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="_static/translations.js?v=91613774"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=c033477b"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=4755f45a"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="検索" href="search.html" />
@@ -80,17 +78,19 @@
 <section id="id1">
 <h2>pydominoとは<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <p>pydomino は日本語音声に対して音素ラベルをアラインメントするためのツールです。</p>
-</section>
-<section id="id2">
-<h2>使い方<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
-<p>pydomino はPythonライブラリとコマンドラインツールの2通りで利用できます。</p>
+<p>内部では、音素遷移予測に基づく音素アラインメントをしています。詳しい説明は <a class="reference external" href="https://dmv.nico/ja/articles/domino_phoneme_transition/">記事</a> を読んでください。</p>
+<p>ソースコードは <a class="reference external" href="https://github.com/DwangoMediaVillage/pydomino">github</a> にて公開中です。</p>
 </section>
 <section id="id3">
-<h2>インストール方法<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<h2>使い方<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>pydomino はPythonライブラリとコマンドラインツールの2通りで利用できます。</p>
+</section>
+<section id="id4">
+<h2>インストール方法<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <section id="linux-mac">
 <h3>Linux / Mac<a class="headerlink" href="#linux-mac" title="Link to this heading"></a></h3>
 <p>コマンドラインツールがいらない場合はこちらでも直接ライブラリだけインストールできます</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>git+<span class="o">{</span>this-repository-url<span class="o">}</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/DwangoMediaVillage/pydomino
 </pre></div>
 </div>
 </section>
@@ -100,7 +100,7 @@
 <p>例えば、以下のコマンドでインストールできます</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># on `Anaconda Prompt (miniconda3)`</span>
 <span class="s2">&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat&quot;</span>
-git<span class="w"> </span>clone<span class="w"> </span>--recursive<span class="w"> </span><span class="o">{</span>this-repository-url<span class="o">}</span>
+git<span class="w"> </span>clone<span class="w"> </span>--recursive<span class="w"> </span>https://github.com/DwangoMediaVillage/pydomino
 pip<span class="w"> </span>install<span class="w"> </span>./
 </pre></div>
 </div>
