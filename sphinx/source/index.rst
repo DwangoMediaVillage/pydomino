@@ -11,6 +11,10 @@ pydominoとは
 
 pydomino は日本語音声に対して音素ラベルをアラインメントするためのツールです。
 
+内部では、音素遷移予測に基づく音素アラインメントをしています。詳しい説明は `記事 <https://dmv.nico/ja/articles/domino_phoneme_transition/>`_ を読んでください。
+
+ソースコードは `github <https://github.com/DwangoMediaVillage/pydomino>`_ にて公開中です。
+
 使い方
 ------
 
