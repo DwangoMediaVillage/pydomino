@@ -93,10 +93,6 @@ install(TARGETS domino
 )
 
 if(WIN32)
-    // add_custom_command(
-    //     TARGET domino POST_BUILD
-    //     COMMAND ${CMAKE_COMMAND} -E copy ${FETCHCONTENT_BASE_DIR}/onnxruntime-src/lib/onnxruntime.dll $<TARGET_FILE_DIR:domino>
-    // )
     add_custom_command(
         TARGET pydomino_cpp POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy ${FETCHCONTENT_BASE_DIR}/onnxruntime-src/lib/onnxruntime.dll $<TARGET_FILE_DIR:pydomino_cpp>
