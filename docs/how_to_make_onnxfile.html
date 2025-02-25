@@ -57,8 +57,8 @@
                 <li class="toctree-l2"><a class="reference internal" href="#id2">入力</a></li>
                 <li class="toctree-l2"><a class="reference internal" href="#id3">出力</a>
                   <ul>
-                    <li class="toctree-l3"><a class="reference internal" href="#id4">音素遷移トークンの対数発火確率</a></li>
-                    <li class="toctree-l3"><a class="reference internal" href="#blank">blankトークンの対数発火確率</a></li>
+                    <li class="toctree-l3"><a class="reference internal" href="#id4">音素遷移トークンの対数出力確率</a></li>
+                    <li class="toctree-l3"><a class="reference internal" href="#blank">blankトークンの対数出力確率</a></li>
                   </ul>
                 </li>
               </ul>
@@ -104,9 +104,9 @@
                 </section>
                 <section id="id3">
                   <h2>出力<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
-                  <p>出力は音素遷移トークンの対数発火確率と、blankトークンの対数発火確率の2つです。</p>
+                  <p>出力は音素遷移トークンの対数出力確率と、blankトークンの対数出力確率の2つです。</p>
                   <section id="id4">
-                    <h3>音素遷移トークンの対数発火確率<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+                    <h3>音素遷移トークンの対数出力確率<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
                     <p>3次元行列です。変数名は <cite>transition_logprobs</cite>、行列のshapeは <cite>(1 x seq_length x
                         num_token_vocab)</cite> で、<cite>seq_length</cite> は可変長にしています。</p>
                     <p><cite>seq_length</cite> は時間フレームの総数で、<cite>sample_length</cite> から決まります。
@@ -115,10 +115,10 @@
                     </p>
                   </section>
                   <section id="blank">
-                    <h3>blankトークンの対数発火確率<a class="headerlink" href="#blank" title="Link to this heading"></a></h3>
+                    <h3>blankトークンの対数出力確率<a class="headerlink" href="#blank" title="Link to this heading"></a></h3>
                     <p>2次元行列です。変数名は <cite>blank_logprobs</cite>、行列のshapeは <cite>(1 x seq_length)</cite>
                       で、<cite>seq_length</cite> は可変長にしています。</p>
-                    <p><cite>seq_length</cite> は時間フレームの総数で、音素遷移トークンの対数発火確率と同じ値です。</p>
+                    <p><cite>seq_length</cite> は時間フレームの総数で、音素遷移トークンの対数出力確率と同じ値です。</p>
                   </section>
                 </section>
               </section>
