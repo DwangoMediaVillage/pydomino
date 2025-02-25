@@ -24,14 +24,14 @@ Linux / Mac
 
 .. code-block::bash
 
-   git clone --recursive {this-repository-url}
+   git clone --recursive https://github.com/DwangoMediaVillage/pydomino
    pip install ./
 
 コマンドラインツールがいらない場合はこちらでも直接ライブラリだけインストールできます
 
 .. code-block:: bash
 
-   pip install git+{this-repository-url}
+   pip install git+https://github.com/DwangoMediaVillage/pydomino
 
 
 
@@ -46,7 +46,7 @@ Anaconda Prompt (miniconda3) 環境において MSVC の vcvars64.bat を利用�
 
    # on `Anaconda Prompt (miniconda3)`
    "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
-   git clone --recursive {this-repository-url}
+   git clone --recursive https://github.com/DwangoMediaVillage/pydomino
    pip install ./
 
 
