@@ -1,5 +1,5 @@
-for_docstring
-=============
+py_src
+======
 
 .. toctree::
    :maxdepth: 4

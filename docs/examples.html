@@ -18,11 +18,12 @@
         <script src="_static/documentation_options.js?v=c033477b"></script>
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="_static/translations.js?v=4dbe4bdc"></script>
+        <script src="_static/translations.js?v=91613774"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="検索" href="search.html" />
-    <link rel="prev" title="pydomino.Aliger クラス" href="aligner.html" /> 
+    <link rel="next" title="ONNXファイルを自分で作るには" href="how_to_make_onnxfile.html" />
+    <link rel="prev" title="pydomino module" href="pydomino.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,12 +47,13 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="aligner.html">pydomino.Aliger クラス</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pydomino.html">pydomino module</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">pydominoの使用例</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#python">pythonライブラリの場合</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id1">コマンドラインツールの場合</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_make_onnxfile.html">ONNXファイルを自分で作るには</a></li>
 </ul>
 
         </div>
@@ -86,7 +88,7 @@
 <span class="kn">import</span> <span class="nn">librosa</span>
 <span class="kn">import</span> <span class="nn">pydomino</span>
 
-<span class="n">alignmer</span><span class="p">:</span> <span class="n">pydomino</span><span class="o">.</span><span class="n">Aligner</span> <span class="o">=</span> <span class="n">pydomino</span><span class="o">.</span><span class="n">Aligner</span><span class="p">(</span><span class="s2">&quot;onnx_model/model.onnx&quot;</span><span class="p">)</span>
+<span class="n">alignmer</span><span class="p">:</span> <span class="n">pydomino</span><span class="o">.</span><span class="n">Aligner</span> <span class="o">=</span> <span class="n">pydomino</span><span class="o">.</span><span class="n">Aligner</span><span class="p">(</span><span class="s2">&quot;onnx_model/phoneme_transition_model.onnx&quot;</span><span class="p">)</span>
 <span class="n">wav_source</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;example/dowaNgo.wav&quot;</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="mi">16_000</span><span class="p">,</span> <span class="n">mono</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">phonemes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;pau&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;pau&quot;</span><span class="p">]</span>
 <span class="n">alignment_result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">alignmer</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">wav_source</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">phonemes</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
@@ -95,59 +97,58 @@
 </div>
 <p>とすると、以下のアラインメント結果が得られます</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
-    <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.07999999821186066</span><span class="p">,</span> <span class="s1">&#39;pau&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.07999999821186066</span><span class="p">,</span> <span class="mf">0.12999999523162842</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.12999999523162842</span><span class="p">,</span> <span class="mf">0.20000000298023224</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.20000000298023224</span><span class="p">,</span> <span class="mf">0.25999999046325684</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.25999999046325684</span><span class="p">,</span> <span class="mf">0.3400000035762787</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.3400000035762787</span><span class="p">,</span> <span class="mf">0.44999998807907104</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.44999998807907104</span><span class="p">,</span> <span class="mf">0.47999998927116394</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.47999998927116394</span><span class="p">,</span> <span class="mf">0.6800000071525574</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.6800000071525574</span><span class="p">,</span> <span class="mf">0.7300000190734863</span><span class="p">,</span> <span class="s1">&#39;pau&#39;</span><span class="p">)</span>
+    <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.10999999940395355</span><span class="p">,</span> <span class="s2">&quot;pau&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.10999999940395355</span><span class="p">,</span> <span class="mf">0.14000000059604645</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.14000000059604645</span><span class="p">,</span> <span class="mf">0.17000000178813934</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.17000000178813934</span><span class="p">,</span> <span class="mf">0.20999999344348907</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.20999999344348907</span><span class="p">,</span> <span class="mf">0.36000001430511475</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.36000001430511475</span><span class="p">,</span> <span class="mf">0.44999998807907104</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.44999998807907104</span><span class="p">,</span> <span class="mf">0.49000000953674316</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.49000000953674316</span><span class="p">,</span> <span class="mf">0.6200000047683716</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.6200000047683716</span><span class="p">,</span> <span class="mf">0.754687488079071</span><span class="p">,</span> <span class="s2">&quot;pau&quot;</span><span class="p">),</span>
 <span class="p">]</span>
 </pre></div>
 </div>
 <p>ここで、第3引数の最小割り当てフレーム数を5に変えてみると、とすると、以下のアラインメント結果が得られます</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">alignment_result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">alignmer</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">wav_source</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">phonemes</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">alignment_result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">alignmer</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">wav_source</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">phonemes</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">alignment_result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
-    <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.07999999821186066</span><span class="p">,</span> <span class="s1">&#39;pau&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.07999999821186066</span><span class="p">,</span> <span class="mf">0.12999999523162842</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.12999999523162842</span><span class="p">,</span> <span class="mf">0.20000000298023224</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.20000000298023224</span><span class="p">,</span> <span class="mf">0.25999999046325684</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.25999999046325684</span><span class="p">,</span> <span class="mf">0.3400000035762787</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.3400000035762787</span><span class="p">,</span> <span class="mf">0.4399999976158142</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.4399999976158142</span><span class="p">,</span> <span class="mf">0.49000000953674316</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.49000000953674316</span><span class="p">,</span> <span class="mf">0.6800000071525574</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">0.6800000071525574</span><span class="p">,</span> <span class="mf">0.7300000190734863</span><span class="p">,</span> <span class="s1">&#39;pau&#39;</span><span class="p">)</span>
+    <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.029999999329447746</span><span class="p">,</span> <span class="s2">&quot;pau&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.029999999329447746</span><span class="p">,</span> <span class="mf">0.10999999940395355</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.10999999940395355</span><span class="p">,</span> <span class="mf">0.1599999964237213</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.1599999964237213</span><span class="p">,</span> <span class="mf">0.20999999344348907</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.20999999344348907</span><span class="p">,</span> <span class="mf">0.36000001430511475</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.36000001430511475</span><span class="p">,</span> <span class="mf">0.4399999976158142</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.4399999976158142</span><span class="p">,</span> <span class="mf">0.49000000953674316</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.49000000953674316</span><span class="p">,</span> <span class="mf">0.6200000047683716</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.6200000047683716</span><span class="p">,</span> <span class="mf">0.754687488079071</span><span class="p">,</span> <span class="s2">&quot;pau&quot;</span><span class="p">),</span>
 <span class="p">]</span>
 </pre></div>
 </div>
-<p>音素 &quot;g&quot; に割り当てられた秒数が 0.03秒から0.05秒に伸びます。これが、最小割り当てフレーム数の保証によるものです。</p>
+<p>音素 &quot;w&quot; に割り当てられた秒数が 0.03秒から0.05秒に伸びます。これが、最小割り当てフレーム数の保証によるものです。このフレーム数の保証は両端の <cite>pau</cite> トークンには適用されていません。このことは、最小割り当てフレーム数を5に変えてみたときの最初の <cite>pau</cite> トークンに割り当てられた秒数が0.03秒であることからもわかります。</p>
 </section>
 <section id="id1">
 <h2>コマンドラインツールの場合<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
-<p>git clone と pip install ./ を使った場合、./build ディレクトリ以下にコマンドラインツールがビルドされます。</p>
-<p>これによってアラインメントの実行も可能です</p>
+<p>ライブラリのインストールによって、仮想環境にコマンドラインツールもビルドされます。これによってアラインメントの実行も可能です</p>
 <p>たとえば</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>build/<span class="o">{</span>temporary-directory<span class="o">}</span>/pydomino/domino<span class="w"> </span>--input_path<span class="w"> </span>example/dowaNgo.wav<span class="w"> </span>--input_phoneme<span class="w"> </span><span class="s2">&quot;pau d o w a N g o pau&quot;</span><span class="w"> </span>--output_path<span class="w"> </span>result.lab<span class="w"> </span>-N<span class="w"> </span><span class="m">5</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>domino<span class="w"> </span>--input_path<span class="w"> </span>example/dowaNgo.wav<span class="w"> </span>--input_phoneme<span class="w"> </span><span class="s2">&quot;pau d o w a N g o pau&quot;</span><span class="w"> </span>--output_path<span class="w"> </span>result.lab<span class="w"> </span>--onnx_path<span class="o">=</span>onnx_model/phoneme_transition_model.onnx<span class="w"> </span>--min_frame<span class="o">=</span><span class="m">3</span>
 </pre></div>
 </div>
 <p>とすると、以下のアラインメント結果が labファイル（result.lab）に出力されます</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>cat<span class="w"> </span>result.wav
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>cat<span class="w"> </span>result.lab
 </pre></div>
 </div>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="mf">0.00</span><span class="w">        </span><span class="mf">0.08</span><span class="w">    </span><span class="n">pau</span>
-<span class="mf">0.08</span><span class="w">        </span><span class="mf">0.13</span><span class="w">    </span><span class="n">d</span>
-<span class="mf">0.13</span><span class="w">        </span><span class="mf">0.20</span><span class="w">    </span><span class="n">o</span>
-<span class="mf">0.20</span><span class="w">        </span><span class="mf">0.26</span><span class="w">    </span><span class="n">w</span>
-<span class="mf">0.26</span><span class="w">        </span><span class="mf">0.34</span><span class="w">    </span><span class="n">a</span>
-<span class="mf">0.34</span><span class="w">        </span><span class="mf">0.44</span><span class="w">    </span><span class="n">N</span>
-<span class="mf">0.44</span><span class="w">        </span><span class="mf">0.49</span><span class="w">    </span><span class="n">g</span>
-<span class="mf">0.49</span><span class="w">        </span><span class="mf">0.68</span><span class="w">    </span><span class="n">o</span>
-<span class="mf">0.68</span><span class="w">        </span><span class="mf">0.73</span><span class="w">    </span><span class="n">pau</span>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="mf">0.000</span><span class="w">       </span><span class="mf">0.110</span><span class="w">   </span><span class="n">pau</span>
+<span class="mf">0.110</span><span class="w">       </span><span class="mf">0.140</span><span class="w">   </span><span class="n">d</span>
+<span class="mf">0.140</span><span class="w">       </span><span class="mf">0.170</span><span class="w">   </span><span class="n">o</span>
+<span class="mf">0.170</span><span class="w">       </span><span class="mf">0.210</span><span class="w">   </span><span class="n">w</span>
+<span class="mf">0.210</span><span class="w">       </span><span class="mf">0.360</span><span class="w">   </span><span class="n">a</span>
+<span class="mf">0.360</span><span class="w">       </span><span class="mf">0.450</span><span class="w">   </span><span class="n">N</span>
+<span class="mf">0.450</span><span class="w">       </span><span class="mf">0.490</span><span class="w">   </span><span class="n">g</span>
+<span class="mf">0.490</span><span class="w">       </span><span class="mf">0.620</span><span class="w">   </span><span class="n">o</span>
+<span class="mf">0.620</span><span class="w">       </span><span class="mf">0.755</span><span class="w">   </span><span class="n">pau</span>
 </pre></div>
 </div>
 </section>
@@ -157,13 +158,14 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="aligner.html" class="btn btn-neutral float-left" title="pydomino.Aliger クラス" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pydomino.html" class="btn btn-neutral float-left" title="pydomino module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="how_to_make_onnxfile.html" class="btn btn-neutral float-right" title="ONNXファイルを自分で作るには" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, DWANGO Co.,Ltd..</p>
+    <p>&#169; Copyright 2025, shun ueda.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
