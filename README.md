@@ -17,7 +17,7 @@
 #### Linux / Mac
 
 ```sh
-git clone --recursive {this-repository-url}
+git clone --recursive https://github.com/DwangoMediaVillage/pydomino
 cd pydomino
 pip install ./
 ```
@@ -25,7 +25,7 @@ pip install ./
 また、下記のように直接 pip インストールもできます（コマンドラインツールはインストールされません）：
 
 ```sh
-pip install git+{this-repository-url}
+pip install git+https://github.com/DwangoMediaVillage/pydomino
 ```
 
 
@@ -39,7 +39,7 @@ pip install git+{this-repository-url}
 ```sh
 # on `Anaconda Prompt (miniconda3)`
 "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
-git clone --recursive {this-repository-url}
+git clone --recursive https://github.com/DwangoMediaVillage/pydomino
 cd pydomino
 pip install ./
 ```
