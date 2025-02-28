@@ -24,12 +24,10 @@ if (WIN32)
     FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-win-x64-1.16.3.zip)
 elseif(APPLE)
     FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-osx-universal2-1.16.3.tgz)
-else()
-    if (CMAKE_SYSTEM_PROCESSOR MATCHES "AMD" OR CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
+elseif (CMAKE_SYSTEM_PROCESSOR MATCHES "AMD" OR CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
         FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-linux-aarch64-1.16.3.tgz)
-    else()
-        FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-linux-x64-1.16.3.tgz)
-    endif()
+else()
+    FetchContent_Declare(onnxruntime URL https://github.com/microsoft/onnxruntime/releases/download/v1.16.3/onnxruntime-linux-x64-1.16.3.tgz)
 endif()
 FetchContent_MakeAvailable(onnxruntime)
 
@@ -88,13 +86,13 @@ endif()
     
 target_link_directories(domino PRIVATE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/_deps/onnxruntime-src/lib)
 
-if(WIN32)
-    add_custom_command(
-        TARGET domino POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${FETCHCONTENT_BASE_DIR}/onnxruntime-src/lib/onnxruntime.dll $<TARGET_FILE_DIR:domino>
-    )
-endif()
-
 install(TARGETS domino
     RUNTIME DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 )
+
+if(WIN32)
+    add_custom_command(
+        TARGET pydomino_cpp POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${FETCHCONTENT_BASE_DIR}/onnxruntime-src/lib/onnxruntime.dll $<TARGET_FILE_DIR:pydomino_cpp>
+    )
+endif()
