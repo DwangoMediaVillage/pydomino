@@ -3,6 +3,7 @@
 `pydomino` は日本語音声に対して音素ラベルをアラインメントするためのツールです。GPUは不要です。
 ライブラリとして Python から使うこともコマンドラインツールとしてコンソールから使うこともできます。
 ドキュメントは [こちら](https://dwangomediavillage.github.io/pydomino/) からご覧いただけます。
+技術の解説記事は [こちら](https://dmv.nico/ja/articles/domino_phoneme_transition/) からご覧いただけます
 
 ## Installation
 
@@ -22,7 +23,7 @@ cd pydomino
 pip install ./
 ```
 
-また、下記のように直接 pip インストールもできます（コマンドラインツールはインストールされません）：
+また、下記のように直接 pip インストールもできます（コマンドラインツールもインストールされます）：
 
 ```sh
 pip install git+https://github.com/DwangoMediaVillage/pydomino
@@ -42,6 +43,12 @@ pip install git+https://github.com/DwangoMediaVillage/pydomino
 git clone --recursive https://github.com/DwangoMediaVillage/pydomino
 cd pydomino
 pip install ./
+```
+
+また、下記のように直接 pip インストールもできます（コマンドラインツールもインストールされます）：
+
+```sh
+pip install git+https://github.com/DwangoMediaVillage/pydomino
 ```
 
 ## Run samples
