@@ -23,7 +23,7 @@ cd pydomino
 pip install ./
 ```
 
-また、下記のように直接 pip インストールもできます（コマンドラインツールもインストールされます）：
+また、下記のように直接 pip インストールもできます（コマンドラインツールもインストールされます。コマンドラインツールを使うときは、onnxファイルを指定する必要があります。`onnx_model/phoneme_transition_model.onnx` をダウンロードしてください）：
 
 ```sh
 pip install git+https://github.com/DwangoMediaVillage/pydomino
@@ -45,7 +45,7 @@ cd pydomino
 pip install ./
 ```
 
-また、下記のように直接 pip インストールもできます（コマンドラインツールもインストールされます）：
+また、下記のように直接 pip インストールもできます（コマンドラインツールもインストールされます。コマンドラインツールを使うときは、onnxファイルを指定する必要があります。`onnx_model/phoneme_transition_model.onnx` をダウンロードしてください）：
 
 ```sh
 pip install git+https://github.com/DwangoMediaVillage/pydomino
