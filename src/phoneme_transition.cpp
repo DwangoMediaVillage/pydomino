@@ -25,7 +25,6 @@ PhonemeTransitionTokenizer::PhonemeTransitionTokenizer() {
   );
 
   std::string line;
-  id_to_token_map.reserve(556);  // 音素遷移の総数
   while (std::getline(text, line)) {
     std::vector<std::string> phonemes;
     std::stringstream ss(line);
@@ -143,7 +142,7 @@ std::vector<int> PhonemeTransitionTokenizer::read_phonemes(std::istream &ss) {
     }
     insert_pause_both_ends_if_not_exists(phonemes);
     unvoice_i_and_u(phonemes);
-    unique_consecutive(phonemes);
+    // unique_consecutive(phonemes);
 
     for (int i = 1; i < phonemes.size(); ++i) {
       PhonemeTransition transition = PhonemeTransition{phonemes[i - 1], phonemes[i]};
