@@ -74,7 +74,9 @@ class CMakeBuild(build_ext):
 
             # Multi-config generators have a different way to specify configs
             if not single_config:
-                cmake_args += [f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{cfg.upper()}={extdir}"]
+                cmake_args += [
+                    f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{cfg.upper()}={extdir}"
+                ]
                 build_args += ["--config", cfg]
 
         if sys.platform.startswith("darwin"):
@@ -96,8 +98,12 @@ class CMakeBuild(build_ext):
         if not build_temp.exists():
             build_temp.mkdir(parents=True)
 
-        subprocess.run(["cmake", ext.sourcedir, *cmake_args], cwd=build_temp, check=True)
-        subprocess.run(["cmake", "--build", ".", *build_args], cwd=build_temp, check=True)
+        subprocess.run(
+            ["cmake", ext.sourcedir, *cmake_args], cwd=build_temp, check=True
+        )
+        subprocess.run(
+            ["cmake", "--build", ".", *build_args], cwd=build_temp, check=True
+        )
         subprocess.run(["cmake", "--install", "."], cwd=build_temp, check=True)
 
 
@@ -105,7 +111,7 @@ class CMakeBuild(build_ext):
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="pydomino_cpp",
-    version="1.1.0",
+    version="1.2.0",
     url="https://github.com/DwangoMediaVillage/pydomino",
     author="DWANGO Co., Ltd.",
     author_email="shun_ueda@dwango.co.jp",
