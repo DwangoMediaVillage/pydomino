@@ -48,7 +48,10 @@
 <li class="toctree-l1"><a class="reference internal" href="pydomino.html">pydomino module</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">pydominoの使用例</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#python">pythonライブラリの場合</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id1">コマンドラインツールの場合</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">コマンドラインツールの場合</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#textgrid-version-1-2-1">TextGridファイルへの出力 (version 1.2.1以降)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="how_to_make_onnxfile.html">ONNXファイルを自分で作るには</a></li>
@@ -143,17 +146,93 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>cat<span class="w"> </span>result.lab
 </pre></div>
 </div>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="mf">0.000</span><span class="w">       </span><span class="mf">0.110</span><span class="w">   </span><span class="n">pau</span>
-<span class="mf">0.110</span><span class="w">       </span><span class="mf">0.140</span><span class="w">   </span><span class="n">d</span>
-<span class="mf">0.140</span><span class="w">       </span><span class="mf">0.170</span><span class="w">   </span><span class="n">o</span>
-<span class="mf">0.170</span><span class="w">       </span><span class="mf">0.210</span><span class="w">   </span><span class="n">w</span>
-<span class="mf">0.210</span><span class="w">       </span><span class="mf">0.360</span><span class="w">   </span><span class="n">a</span>
-<span class="mf">0.360</span><span class="w">       </span><span class="mf">0.450</span><span class="w">   </span><span class="n">N</span>
-<span class="mf">0.450</span><span class="w">       </span><span class="mf">0.490</span><span class="w">   </span><span class="n">g</span>
-<span class="mf">0.490</span><span class="w">       </span><span class="mf">0.620</span><span class="w">   </span><span class="n">o</span>
-<span class="mf">0.620</span><span class="w">       </span><span class="mf">0.755</span><span class="w">   </span><span class="n">pau</span>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="mf">0.000</span><span class="w">       </span><span class="mf">0.000</span><span class="w">   </span><span class="n">pau</span>
+<span class="mf">0.000</span><span class="w">       </span><span class="mf">0.080</span><span class="w">   </span><span class="n">d</span>
+<span class="mf">0.080</span><span class="w">       </span><span class="mf">0.150</span><span class="w">   </span><span class="n">o</span>
+<span class="mf">0.150</span><span class="w">       </span><span class="mf">0.190</span><span class="w">   </span><span class="n">w</span>
+<span class="mf">0.190</span><span class="w">       </span><span class="mf">0.350</span><span class="w">   </span><span class="n">a</span>
+<span class="mf">0.350</span><span class="w">       </span><span class="mf">0.460</span><span class="w">   </span><span class="n">N</span>
+<span class="mf">0.460</span><span class="w">       </span><span class="mf">0.490</span><span class="w">   </span><span class="n">g</span>
+<span class="mf">0.490</span><span class="w">       </span><span class="mf">0.640</span><span class="w">   </span><span class="n">o</span>
+<span class="mf">0.640</span><span class="w">       </span><span class="mf">0.724</span><span class="w">   </span><span class="n">pau</span>
 </pre></div>
 </div>
+<section id="textgrid-version-1-2-1">
+<h3>TextGridファイルへの出力 (version 1.2.1以降)<a class="headerlink" href="#textgrid-version-1-2-1" title="Link to this heading"></a></h3>
+<p>コマンドラインツールを使った場合に限ってですが、TextGridファイルの出力に対応しました。</p>
+<p>オプション <cite>--output_format=TextGrid</cite> を付け加えると、出力が lab ファイルではなく TextGrid ファイルとなります</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>domino<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--input_path<span class="w"> </span>example/dowaNgo.wav<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--input_phoneme<span class="w"> </span><span class="s2">&quot;pau d o w a N g o pau&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output_path<span class="w"> </span>result.lab<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--onnx_path<span class="o">=</span>onnx_model/phoneme_transition_model.onnx<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output_format<span class="o">=</span>TextGrid<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--min_frame<span class="o">=</span><span class="m">3</span>
+</pre></div>
+</div>
+<p>とすると、以下のアラインメント結果が labファイル（result.TextGrid）に出力されます</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>cat<span class="w"> </span>result.TextGrid
+</pre></div>
+</div>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="nx">File</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;ooTextFile&quot;</span>
+<span class="nx">Object</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;TextGrid&quot;</span>
+
+<span class="nx">xmin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="nx">xmax</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.724</span>
+<span class="nx">tiers</span><span class="p">?</span><span class="w"> </span><span class="p">&lt;</span><span class="nx">exists</span><span class="p">&gt;</span>
+<span class="nx">size</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="nx">item</span><span class="w"> </span><span class="p">[]:</span>
+<span class="w">    </span><span class="nx">item</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+<span class="w">        </span><span class="kd">class</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;IntervalTier&quot;</span>
+<span class="w">        </span><span class="nx">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;phonemes&quot;</span>
+<span class="w">        </span><span class="nx">xmin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="nx">xmax</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.724</span>
+<span class="w">        </span><span class="nx">intervals</span><span class="p">:</span><span class="w"> </span><span class="nx">size</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="nx">intervals</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+<span class="w">            </span><span class="nx">xmin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">            </span><span class="nx">xmax</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.724</span>
+<span class="w">            </span><span class="nx">text</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;d o w a N g o pau&quot;</span>
+<span class="w">    </span><span class="nx">item</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+<span class="w">        </span><span class="kd">class</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;IntervalTier&quot;</span>
+<span class="w">        </span><span class="nx">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;alignment result&quot;</span>
+<span class="w">        </span><span class="nx">xmin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="nx">xmax</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.724</span>
+<span class="w">        </span><span class="nx">intervals</span><span class="p">:</span><span class="w"> </span><span class="nx">size</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="w">        </span><span class="nx">intervals</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+<span class="w">            </span><span class="nx">xmin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.000</span>
+<span class="w">            </span><span class="nx">xmax</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.080</span>
+<span class="w">            </span><span class="nx">text</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;d&quot;</span>
+<span class="w">        </span><span class="nx">intervals</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+<span class="w">            </span><span class="nx">xmin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.080</span>
+<span class="w">            </span><span class="nx">xmax</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.150</span>
+<span class="w">            </span><span class="nx">text</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;o&quot;</span>
+<span class="w">        </span><span class="nx">intervals</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
+<span class="w">            </span><span class="nx">xmin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.150</span>
+<span class="w">            </span><span class="nx">xmax</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.190</span>
+<span class="w">            </span><span class="nx">text</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;w&quot;</span>
+<span class="w">        </span><span class="nx">intervals</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span>
+<span class="w">            </span><span class="nx">xmin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.190</span>
+<span class="w">            </span><span class="nx">xmax</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.350</span>
+<span class="w">            </span><span class="nx">text</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;a&quot;</span>
+<span class="w">        </span><span class="nx">intervals</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span>
+<span class="w">            </span><span class="nx">xmin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.350</span>
+<span class="w">            </span><span class="nx">xmax</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.460</span>
+<span class="w">            </span><span class="nx">text</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;N&quot;</span>
+<span class="w">        </span><span class="nx">intervals</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span>
+<span class="w">            </span><span class="nx">xmin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.460</span>
+<span class="w">            </span><span class="nx">xmax</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.490</span>
+<span class="w">            </span><span class="nx">text</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;g&quot;</span>
+<span class="w">        </span><span class="nx">intervals</span><span class="p">[</span><span class="mi">7</span><span class="p">]:</span>
+<span class="w">            </span><span class="nx">xmin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.490</span>
+<span class="w">            </span><span class="nx">xmax</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.640</span>
+<span class="w">            </span><span class="nx">text</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;o&quot;</span>
+<span class="w">        </span><span class="nx">intervals</span><span class="p">[</span><span class="mi">8</span><span class="p">]:</span>
+<span class="w">            </span><span class="nx">xmin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.640</span>
+<span class="w">            </span><span class="nx">xmax</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m m-Double">0.724</span>
+<span class="w">            </span><span class="nx">text</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;pau&quot;</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
