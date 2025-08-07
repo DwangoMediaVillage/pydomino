@@ -44,6 +44,10 @@ PhonemeTransitionTokenizer::PhonemeTransitionTokenizer() {
  * @param phonemes 入力音素列
  */
 void PhonemeTransitionTokenizer::insert_pause_both_ends_if_not_exists(std::vector<std::string> &phonemes) {
+  if (phonemes.size() == 1 && (phonemes[0] == "pau" || phonemes[0] == "")) {
+    throw std::invalid_argument(
+        "The phoneme sequence must contain at least one phoneme other than 'pau' for alignment.");
+  }
   if (phonemes[0] != "pau") {
     phonemes.insert(phonemes.begin(), "pau");
   }
@@ -142,7 +146,6 @@ std::vector<int> PhonemeTransitionTokenizer::read_phonemes(std::istream &ss) {
     }
     insert_pause_both_ends_if_not_exists(phonemes);
     unvoice_i_and_u(phonemes);
-    // unique_consecutive(phonemes);
 
     for (int i = 1; i < phonemes.size(); ++i) {
       PhonemeTransition transition = PhonemeTransition{phonemes[i - 1], phonemes[i]};
