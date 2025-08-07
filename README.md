@@ -93,22 +93,34 @@ domino \
     --min_frame==3
 ```
 
+また ver 1.2.1 にて、TextGridファイルへの出力に対応いたしました。`--output_format=TextGrid` を付け加えると、出力が lab ファイルではなく TextGrid ファイルとなります。
+
+```sh
+domino \
+    --input_path={path-to-wav-file} \
+    --input_phoneme={path-to-phoneme-file} \
+    --output_path={path-to-output-lab-file} \
+    --onnx_path={path-to-output-onnx-file} \
+    --output_format=TextGrid \
+    --min_frame==3
+```
+
 onnxファイルは当組織で学習済みの `onnx_model/phoneme_transition_model.onnx` を用意していますのでお使いください
 
-### label file format (.lab)
+### label file format (.lab) とは
 
-アラインメント結果のラベルファイル (.lab) は、tsv ファイル構造になっています。
+音素アラインメントの結果を表すフォーマットとしてよく使われるファイル形式です。
 
 各行に音素の開始時刻と終了時刻 (いずれも単位は秒) と、そのときの音素が TAB 区切りで並んでいます：
 
 ```txt
-0.000	0.110	pau
-0.110	0.140	d
-0.140	0.170	o
-0.170	0.210	w
-0.210	0.360	a
-0.360	0.450	N
-0.450	0.490	g
-0.490	0.620	o
-0.620	0.755	pau
+0.000	0.000	pau
+0.000	0.080	d
+0.080	0.150	o
+0.150	0.190	w
+0.190	0.350	a
+0.350	0.460	N
+0.460	0.490	g
+0.490	0.640	o
+0.640	0.724	pau
 ```
