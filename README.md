@@ -90,7 +90,7 @@ domino \
     --input_phoneme={path-to-phoneme-file} \
     --output_path={path-to-output-lab-file} \
     --onnx_path={path-to-output-onnx-file} \
-    --min_frame==3
+    --min_frame=3
 ```
 
 また ver 1.2.1 にて、TextGridファイルへの出力に対応いたしました。`--output_format=TextGrid` を付け加えると、出力が lab ファイルではなく TextGrid ファイルとなります。
@@ -102,7 +102,7 @@ domino \
     --output_path={path-to-output-lab-file} \
     --onnx_path={path-to-output-onnx-file} \
     --output_format=TextGrid \
-    --min_frame==3
+    --min_frame=3
 ```
 
 onnxファイルは当組織で学習済みの `onnx_model/phoneme_transition_model.onnx` を用意していますのでお使いください
